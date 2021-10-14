@@ -36,6 +36,10 @@ public class Stone {
 		this.tile = tile;
 	}
 
+	public Tile getTile() {
+		return tile;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
