@@ -1,7 +1,6 @@
 package nl.hanze.hive;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;

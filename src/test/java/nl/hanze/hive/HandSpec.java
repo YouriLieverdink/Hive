@@ -6,14 +6,13 @@ import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class HandCheck {
+public class HandSpec {
     @Test
-        // Add stone to hand
+    // Add stone to hand
     void addStoneToHandWhenNotSameThenFalse() {
         Hand hand = new Hand(Player.BLACK);
         Stone queenBee = new Stone(Player.BLACK, Tile.QUEEN_BEE);
@@ -23,7 +22,7 @@ public class HandCheck {
     }
 
     @Test
-        // Add stone to hand
+    // Add stone to hand
     void addStoneToHandWhenSameThenTrue() {
         Hand hand = new Hand(Player.BLACK);
         Stone queenBee = new Stone(Player.BLACK, Tile.QUEEN_BEE);
@@ -33,7 +32,7 @@ public class HandCheck {
     }
 
     @Test
-        // Requirements 1c.
+    // Requirements 1c.
     void correctStartingHandWhenSameThenTrue() {
         Hand hand = new Hand(Player.BLACK);
         ArrayList<Tile> tiles = hand.getTileNames();
