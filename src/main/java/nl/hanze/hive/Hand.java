@@ -25,6 +25,12 @@ public class Hand {
     public Hand(Player player) {
         this.player = player;
         this.stones = new ArrayList<Stone>();
+
+        this.add(new Stone(this.player, Tile.QUEEN_BEE), 1);
+        this.add(new Stone(this.player, Tile.SPIDER), 2);
+        this.add(new Stone(this.player, Tile.BEETLE), 2);
+        this.add(new Stone(this.player, Tile.GRASSHOPPER), 3);
+        this.add(new Stone(this.player, Tile.SOLDIER_ANT), 3);
     }
 
     /**
@@ -55,39 +61,17 @@ public class Hand {
         stones.clear();
     }
 
-
-    /**
-     * Fill the Hand with all starting stones.
-     */
-    public void startingHand(){
-        this.clear();
-        this.add(new Stone(this.player, Tile.QUEEN_BEE), 1);
-        this.add(new Stone(this.player, Tile.SPIDER), 2);
-        this.add(new Stone(this.player, Tile.BEETLE), 2);
-        this.add(new Stone(this.player, Tile.GRASSHOPPER), 3);
-        this.add(new Stone(this.player, Tile.SOLDIER_ANT), 3);
-    }
-
     /**
      * Returns list with only tile names from the stones that Hand has
      *
      * @return tileNames List of tile names
      */
-    private ArrayList<Tile> listOfTiles(){
+    public ArrayList<Tile> getTileNames(){
         ArrayList<Tile> tileNames = new ArrayList<>();
         for (Stone tile : stones){
             tileNames.add(tile.getTile());
         }
         return tileNames;
-    }
-
-    /**
-     * Fill the Hand with all starting stones.
-     *
-     * @return number of stones if none return False
-     */
-    public int getAmountOfSpecificStone(Tile tile){
-        return Collections.frequency(listOfTiles(), tile);
     }
 
     /**

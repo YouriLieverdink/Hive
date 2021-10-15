@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HandCheck {
@@ -30,15 +34,14 @@ public class HandCheck {
 
     @Test
         // Requirements 1c.
-    void correctStartingHandHandWhenSameThenTrue() {
+    void correctStartingHandWhenSameThenTrue() {
         Hand hand = new Hand(Player.BLACK);
+        ArrayList<Tile> tiles = hand.getTileNames();
 
-        hand.startingHand();
-
-        assertSame(hand.getAmountOfSpecificStone(Tile.QUEEN_BEE), 1);
-        assertSame(hand.getAmountOfSpecificStone(Tile.SPIDER), 2);
-        assertSame(hand.getAmountOfSpecificStone(Tile.BEETLE), 2);
-        assertSame(hand.getAmountOfSpecificStone(Tile.GRASSHOPPER), 3);
-        assertSame(hand.getAmountOfSpecificStone(Tile.SOLDIER_ANT), 3);
+        assertSame(Collections.frequency(tiles, Tile.QUEEN_BEE), 1);
+        assertSame(Collections.frequency(tiles, Tile.SPIDER), 2);
+        assertSame(Collections.frequency(tiles, Tile.BEETLE), 2);
+        assertSame(Collections.frequency(tiles, Tile.GRASSHOPPER), 3);
+        assertSame(Collections.frequency(tiles, Tile.SOLDIER_ANT), 3);
     }
 }
