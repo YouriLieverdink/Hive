@@ -10,6 +10,6 @@ public class BoardSpec {
 	public void whenNewBoardThenEmpty() {
 		Board b = new Board();
 
-		assertTrue(b.positions.size() == 0);
+		assertTrue(b.getPositions().size() == 0);
 	}
 }
