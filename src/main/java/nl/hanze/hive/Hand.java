@@ -1,6 +1,7 @@
 package nl.hanze.hive;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
@@ -14,7 +15,7 @@ public class Hand {
     /**
      * The hand that contains all the Stones of the player.
      */
-    private ArrayList<Stone> stones;
+    private List<Stone> stones;
 
     /**
      * Class constructor which specifies the player and stones.
@@ -23,7 +24,7 @@ public class Hand {
      */
     public Hand(Player player) {
         this.player = player;
-        this.stones = new ArrayList<Stone>();
+        this.stones = new ArrayList<>();
 
         this.add(new Stone(this.player, Tile.QUEEN_BEE), 1);
         this.add(new Stone(this.player, Tile.SPIDER), 2);
@@ -65,8 +66,8 @@ public class Hand {
      *
      * @return tileNames List of tile names
      */
-    public ArrayList<Tile> getTileNames(){
-        ArrayList<Tile> tileNames = new ArrayList<>();
+    public List<Tile> getTileNames(){
+        List<Tile> tileNames = new ArrayList<>();
         for (Stone tile : stones){
             tileNames.add(tile.getTile());
         }
@@ -78,7 +79,7 @@ public class Hand {
      *
      * @return stones The list of stones
      */
-    public ArrayList<Stone> getStones() {
+    public List<Stone> getStones() {
         return stones;
     }
 }
