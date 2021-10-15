@@ -55,10 +55,4 @@ public class Position {
 
 		return this.q == position.q && this.r == position.r;
 	}
-
-	@Override
-	public int hashCode() {
-
-		return Objects.hash(q, r);
-	}
 }
