@@ -50,10 +50,4 @@ public class Stone {
 
 		return this.player == stone.player && this.tile == stone.tile;
 	}
-
-	@Override
-	public int hashCode() {
-
-		return Objects.hash(player, tile);
-	}
 }
