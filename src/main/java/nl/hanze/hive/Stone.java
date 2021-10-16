@@ -1,7 +1,5 @@
 package nl.hanze.hive;
 
-import java.util.Objects;
-
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
