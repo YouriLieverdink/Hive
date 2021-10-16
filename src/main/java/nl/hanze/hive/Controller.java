@@ -27,6 +27,16 @@ public class Controller implements Hive {
 
 	@Override
 	public void play(Tile tile, int q, int r) throws IllegalMove {
+		if (turn == Player.BLACK) {
+			if (!black.hasTile(tile)) {
+				throw new IllegalMove();
+			}
+		}
+		else {
+			if (!white.hasTile(tile)) {
+				throw new IllegalMove();
+			}
+		}
 	}
 
 	@Override

@@ -76,6 +76,16 @@ public class Hand {
     }
 
     /**
+     * Whether the has the provided tile.
+     *
+     * @param tile The tile to check for.
+     * @return boolean
+     */
+    public boolean hasTile(Tile tile) {
+        return this.stones.contains(new Stone(player, tile));
+    }
+
+    /**
      * Get the list of stones
      *
      * @return stones The list of stones
