@@ -11,4 +11,20 @@ public class ControllerSpec {
 
         assertTrue(c.getTurn() == Hive.Player.WHITE);
     }
+
+    @Test
+    public void whenNewControllerThenBlackStartingHand() {
+        Controller c = new Controller();
+        Hand h = new Hand(Hive.Player.BLACK);
+
+        assertTrue(c.black.equals(h));
+    }
+
+    @Test
+    public void whenNewControllerThenWhiteStartingHand() {
+        Controller c = new Controller();
+        Hand h = new Hand(Hive.Player.WHITE);
+
+        assertTrue(c.white.equals(h));
+    }
 }
