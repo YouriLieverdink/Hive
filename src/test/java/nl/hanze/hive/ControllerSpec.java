@@ -17,7 +17,7 @@ public class ControllerSpec {
         Controller c = new Controller();
         Hand h = new Hand(Hive.Player.BLACK);
 
-        assertTrue(c.black.equals(h));
+        assertTrue(c.getBlack().equals(h));
     }
 
     @Test
@@ -25,6 +25,6 @@ public class ControllerSpec {
         Controller c = new Controller();
         Hand h = new Hand(Hive.Player.WHITE);
 
-        assertTrue(c.white.equals(h));
+        assertTrue(c.getWhite().equals(h));
     }
 }

@@ -7,10 +7,22 @@ public class Controller implements Hive {
 	private Player turn;
 
 	/**
+	 * The hand of the black player.
+	 */
+	private Hand black;
+
+	/**
+	 * The hand of the white player.
+	 */
+	private Hand white;
+
+	/**
 	 * Class constructor.
 	 */
 	public Controller() {
 		this.turn = Player.WHITE;
+		this.black = new Hand(Player.BLACK);
+		this.white = new Hand(Player.WHITE);
 	}
 
 	@Override
@@ -42,5 +54,23 @@ public class Controller implements Hive {
 	 */
 	public Player getTurn() {
 		return turn;
+	}
+
+	/**
+	 * Retrieves the hand of the black player.
+	 *
+	 * @return Hand
+	 */
+	public Hand getBlack() {
+		return black;
+	}
+
+	/**
+	 * Retrieves the hand of the white player.
+	 *
+	 * @return White
+	 */
+	public Hand getWhite() {
+		return white;
 	}
 }

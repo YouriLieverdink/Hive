@@ -2,6 +2,7 @@ package nl.hanze.hive;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
@@ -36,10 +37,10 @@ public class Hand {
     /**
      * Adds a specific stone a certain amount of times to the Hand.
      *
-     * @param stone The stone.
+     * @param stone  The stone.
      * @param amount number of times the stone has to be added
      */
-    public void add(Stone stone, int amount){
+    public void add(Stone stone, int amount) {
         for (int i = 0; i < amount; i++) {
             stones.add(stone);
         }
@@ -50,14 +51,14 @@ public class Hand {
      *
      * @param stone The stone.
      */
-    public void remove(Stone stone){
+    public void remove(Stone stone) {
         stones.remove(stone);
     }
 
     /**
      * Removes all stones from the Hand.
      */
-    public void clear(){
+    public void clear() {
         stones.clear();
     }
 
@@ -66,9 +67,9 @@ public class Hand {
      *
      * @return tileNames List of tile names
      */
-    public List<Tile> getTileNames(){
+    public List<Tile> getTileNames() {
         List<Tile> tileNames = new ArrayList<>();
-        for (Stone tile : stones){
+        for (Stone tile : stones) {
             tileNames.add(tile.getTile());
         }
         return tileNames;
@@ -81,5 +82,20 @@ public class Hand {
      */
     public List<Stone> getStones() {
         return stones;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Hand hand = (Hand) obj;
+
+        return this.player == hand.player && this.stones.equals(hand.stones);
     }
 }
