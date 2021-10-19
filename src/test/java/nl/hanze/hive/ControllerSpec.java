@@ -2,6 +2,9 @@ package nl.hanze.hive;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ControllerSpec {
@@ -41,5 +44,26 @@ public class ControllerSpec {
         c.getWhite().remove(new Stone(Hive.Player.WHITE, Hive.Tile.QUEEN_BEE));
 
         assertThrows(Hive.IllegalMove.class, () -> c.play(Hive.Tile.QUEEN_BEE, 0, 0));
+    }
+
+    @Test
+    public void givenTileAndPositionWhenPositionNotEmptyThenIllegalMove() {
+        Map<Position, List<Stone>> positions = Map.of(
+                new Position(0, 0),
+                List.of(new Stone(Hive.Player.BLACK, Hive.Tile.QUEEN_BEE))
+        );
+
+        Board b = new Board(positions);
+        Controller c = new Controller(b);
+
+        try {
+            c.play(Hive.Tile.QUEEN_BEE, 0, 0);
+
+            assertThrows(Hive.IllegalMove.class, () -> c.play(Hive.Tile.BEETLE, 0, 0));
+        }
+        catch (Hive.IllegalMove e) {
+
+        }
+
     }
 }

@@ -11,10 +11,19 @@ public class Board {
     private Map<Position, List<Stone>> positions;
 
     /**
-     * Class constructor which initialises an empty board.
+     * Class constructor which initialises with an empty board.
      */
     public Board() {
         this.positions = new HashMap<>();
+    }
+
+    /**
+     * Class constructor which initialises with a predefined board.
+     *
+     * @param positions The positions to use.
+     */
+    public Board(Map<Position, List<Stone>> positions) {
+        this.positions = positions;
     }
 
     /**

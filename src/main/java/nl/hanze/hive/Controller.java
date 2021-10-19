@@ -17,6 +17,11 @@ public class Controller implements Hive {
 	private Hand white;
 
 	/**
+	 * The board.
+	 */
+	private Board board;
+
+	/**
 	 * Class constructor.
 	 */
 	public Controller() {
@@ -25,12 +30,29 @@ public class Controller implements Hive {
 		this.white = new Hand(Player.WHITE);
 	}
 
+	/**
+	 * Class constructor which specifies the board.
+	 *
+	 * @param board The board to use.
+	 */
+	public Controller(Board board) {
+		this.turn = Player.WHITE;
+		this.black = new Hand(Player.BLACK);
+		this.white = new Hand(Player.WHITE);
+		this.board = board;
+	}
+
 	@Override
 	public void play(Tile tile, int q, int r) throws IllegalMove {
 		Hand hand = getPlayer();
 
 		// Check whether the player has the provided tile at hand.
 		if (!hand.hasTile(tile)) {
+			throw new IllegalMove();
+		}
+
+		// Check whether the position on the board is empty.
+		if (!board.isEmpty(new Position(q, r))) {
 			throw new IllegalMove();
 		}
 	}
