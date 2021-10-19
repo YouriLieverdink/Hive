@@ -34,6 +34,20 @@ public class Stone {
 		this.tile = tile;
 	}
 
+	/**
+	 * Retrieve the player.
+	 *
+	 * @return Player
+	 */
+	public Player getPlayer() {
+		return player;
+	}
+
+	/**
+	 * Retrieve the Tile.
+	 *
+	 * @return Tile
+	 */
 	public Tile getTile() {
 		return tile;
 	}
