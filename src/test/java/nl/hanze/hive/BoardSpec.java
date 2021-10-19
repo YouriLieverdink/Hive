@@ -12,4 +12,12 @@ public class BoardSpec {
 
 		assertTrue(b.getPositions().size() == 0);
 	}
+
+	@Test
+	public void givenPositionWhenEmptyThenTrue() {
+		Board b = new Board();
+		Position p = new Position(0, 0);
+
+		assertTrue(b.isEmpty(p));
+	}
 }

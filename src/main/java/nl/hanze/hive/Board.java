@@ -25,4 +25,19 @@ public class Board {
     public Map<Position, List<Stone>> getPositions() {
         return positions;
     }
+
+    /**
+     * Checks whether the provided position is empty.
+     *
+     * @param position The position to check.
+     * @return boolean
+     */
+    public boolean isEmpty(Position position) {
+        // Return true when the position has not been registered yet.
+        if (!positions.containsKey(position)) {
+            return true;
+        }
+
+        return positions.get(position).isEmpty();
+    }
 }
