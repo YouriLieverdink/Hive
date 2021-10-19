@@ -28,6 +28,7 @@ public class Controller implements Hive {
 		this.turn = Player.WHITE;
 		this.black = new Hand(Player.BLACK);
 		this.white = new Hand(Player.WHITE);
+		this.board = new Board();
 	}
 
 	/**
@@ -67,7 +68,20 @@ public class Controller implements Hive {
 
 	@Override
 	public boolean isWinner(Player player) {
-		return false;
+		// Determine the opponent.
+		Player opponent = player == Player.WHITE ? Player.BLACK : Player.WHITE;
+
+		// Retrieve the position of their queen bee on the board.
+		Position position = board.getPosition(new Stone(opponent, Tile.QUEEN_BEE));
+
+		// Check whether all the spaces around the queen bee are filled.
+		for (Position neighbour : position.getNeighbours()) {
+			if (board.isEmpty(neighbour)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override

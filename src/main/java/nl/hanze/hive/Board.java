@@ -49,4 +49,22 @@ public class Board {
 
         return positions.get(position).isEmpty();
     }
+
+    /**
+     * Returns the position of the provided stone or null if not found.
+     *
+     * @param stone The stone to locate.
+     * @return Position
+     */
+    public Position getPosition(Stone stone) {
+        // Check every position on the known board for the stone.
+        for (Map.Entry<Position, List<Stone>> entry : positions.entrySet()) {
+            // Return the position if it contains the stone.
+            if (entry.getValue().contains(stone)) {
+                return entry.getKey();
+            }
+        }
+
+        return null;
+    }
 }
