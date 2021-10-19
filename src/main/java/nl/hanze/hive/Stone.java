@@ -1,7 +1,5 @@
 package nl.hanze.hive;
 
-import java.util.Objects;
-
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
@@ -36,6 +34,20 @@ public class Stone {
 		this.tile = tile;
 	}
 
+	/**
+	 * Retrieve the player.
+	 *
+	 * @return Player
+	 */
+	public Player getPlayer() {
+		return player;
+	}
+
+	/**
+	 * Retrieve the Tile.
+	 *
+	 * @return Tile
+	 */
 	public Tile getTile() {
 		return tile;
 	}

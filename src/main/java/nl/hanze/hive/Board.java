@@ -11,10 +11,19 @@ public class Board {
     private Map<Position, List<Stone>> positions;
 
     /**
-     * Class constructor which initialises an empty board.
+     * Class constructor which initialises with an empty board.
      */
     public Board() {
         this.positions = new HashMap<>();
+    }
+
+    /**
+     * Class constructor which initialises with a predefined board.
+     *
+     * @param positions The positions to use.
+     */
+    public Board(Map<Position, List<Stone>> positions) {
+        this.positions = positions;
     }
 
     /**
@@ -24,5 +33,20 @@ public class Board {
      */
     public Map<Position, List<Stone>> getPositions() {
         return positions;
+    }
+
+    /**
+     * Checks whether the provided position is empty.
+     *
+     * @param position The position to check.
+     * @return boolean
+     */
+    public boolean isEmpty(Position position) {
+        // Return true when the position has not been registered yet.
+        if (!positions.containsKey(position)) {
+            return true;
+        }
+
+        return positions.get(position).isEmpty();
     }
 }
