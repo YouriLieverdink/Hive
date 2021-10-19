@@ -27,15 +27,11 @@ public class Controller implements Hive {
 
 	@Override
 	public void play(Tile tile, int q, int r) throws IllegalMove {
-		if (turn == Player.BLACK) {
-			if (!black.hasTile(tile)) {
-				throw new IllegalMove();
-			}
-		}
-		else {
-			if (!white.hasTile(tile)) {
-				throw new IllegalMove();
-			}
+		Hand hand = getPlayer();
+
+		// Check whether the player has the provided tile at hand.
+		if (!hand.hasTile(tile)) {
+			throw new IllegalMove();
 		}
 	}
 
@@ -64,6 +60,15 @@ public class Controller implements Hive {
 	 */
 	public Player getTurn() {
 		return turn;
+	}
+
+	/**
+	 * Retrieves the hand of the player whose turn it is.
+	 *
+	 * @return Hand
+	 */
+	public Hand getPlayer() {
+		return turn == Player.WHITE ? white : black;
 	}
 
 	/**
