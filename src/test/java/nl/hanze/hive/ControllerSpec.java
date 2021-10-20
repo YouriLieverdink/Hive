@@ -66,4 +66,63 @@ public class ControllerSpec {
         }
 
     }
+
+    @Test
+    public void givenPlayerWhenWinnerThenTrue() {
+        Map<Position, List<Stone>> positions = Map.of(
+                new Position(0, 0),
+                List.of(new Stone(Hive.Player.BLACK, Hive.Tile.QUEEN_BEE)),
+                // Surround the queen bee with tiles.
+                new Position(1, -1),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.BEETLE)),
+                new Position(1, 0),
+                List.of(new Stone(Hive.Player.BLACK, Hive.Tile.GRASSHOPPER)),
+                new Position(0, 1),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.SOLDIER_ANT)),
+                new Position(-1, 1),
+                List.of(new Stone(Hive.Player.BLACK, Hive.Tile.SPIDER)),
+                new Position(-1, 0),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.GRASSHOPPER)),
+                new Position(0, -1),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.QUEEN_BEE))
+        );
+
+        Board b = new Board(positions);
+        Controller c = new Controller(b);
+
+        assertTrue(c.isWinner(Hive.Player.WHITE));
+    }
+
+    @Test
+    public void whenBlackIsWinnerAndWhiteIsWinnerThenTrue() {
+        Map<Position, List<Stone>> positions = Map.of(
+                // The queen bees.
+                new Position(0, 0),
+                List.of(new Stone(Hive.Player.BLACK, Hive.Tile.QUEEN_BEE)),
+                new Position(0, 1),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.QUEEN_BEE)),
+                // The surrounding tiles.
+                new Position(1, -1),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.BEETLE)),
+                new Position(1, 0),
+                List.of(new Stone(Hive.Player.BLACK, Hive.Tile.GRASSHOPPER)),
+                new Position(1, 1),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.SOLDIER_ANT)),
+                new Position(0, 2),
+                List.of(new Stone(Hive.Player.BLACK, Hive.Tile.SPIDER)),
+                new Position(-1, 2),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.GRASSHOPPER)),
+                new Position(-1, 1),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.SPIDER)),
+                new Position(-1, 0),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.GRASSHOPPER)),
+                new Position(0, -1),
+                List.of(new Stone(Hive.Player.WHITE, Hive.Tile.QUEEN_BEE))
+        );
+
+        Board b = new Board(positions);
+        Controller c = new Controller(b);
+
+        assertTrue(c.isDraw());
+    }
 }

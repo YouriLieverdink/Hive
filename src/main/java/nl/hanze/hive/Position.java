@@ -1,6 +1,7 @@
 package nl.hanze.hive;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Position {
 	/**
@@ -53,5 +54,10 @@ public class Position {
 		Position position = (Position) obj;
 
 		return this.q == position.q && this.r == position.r;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(q, r);
 	}
 }
