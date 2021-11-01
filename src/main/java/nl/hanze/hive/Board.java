@@ -85,4 +85,12 @@ public class Board {
 
 		return stones == null || stones.size() == 0;
 	}
+
+	/**
+	 * Whether the board is empty.
+	 */
+	public boolean isPure() {
+
+		return positions.isEmpty();
+	}
 }

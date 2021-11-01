@@ -60,6 +60,16 @@ public class Controller implements Hive {
 			throw new IllegalMove();
 		}
 
+		if (!board.isPure()) {
+			// Check all the neighbouring positions.
+			for (Position p : new Position(q, r).getNeighbours()) {
+				// When a cell is empty, it is not connected.
+				if (board.isEmpty(p)) {
+					throw new IllegalMove();
+				}
+			}
+		}
+
 		// Add it to the board.
 		board.add(new Position(q, r), stone);
 
