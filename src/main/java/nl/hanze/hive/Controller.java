@@ -55,7 +55,12 @@ public class Controller implements Hive {
 			throw new IllegalMove();
 		}
 
-		// The player has the stone, add it to the board.
+		if (!board.isEmpty(new Position(q, r))) {
+			// The provided position is not empty.
+			throw new IllegalMove();
+		}
+
+		// Add it to the board.
 		board.add(new Position(q, r), stone);
 
 		// Set the turn to the opponent.

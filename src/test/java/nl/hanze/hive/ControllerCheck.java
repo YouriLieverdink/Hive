@@ -60,4 +60,19 @@ public class ControllerCheck {
 		catch (Exception e) {
 		}
 	}
+
+	@Test
+	// Requirement 4b.
+	void givenTileAndPositionWhenTakenThenIllegalMove() {
+		Controller c1 = new Controller();
+
+		try {
+
+			c1.play(Tile.QUEEN_BEE, 0, 0);
+
+			assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.QUEEN_BEE, 0, 0));
+		} //
+		catch (Exception e) {
+		}
+	}
 }
