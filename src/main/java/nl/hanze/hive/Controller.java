@@ -61,12 +61,18 @@ public class Controller implements Hive {
 		}
 
 		if (!board.isPure()) {
+			boolean isConnected = false;
+
 			// Check all the neighbouring positions.
 			for (Position p : new Position(q, r).getNeighbours()) {
 				// When a cell is empty, it is not connected.
-				if (board.isEmpty(p)) {
-					throw new IllegalMove();
+				if (!board.isEmpty(p)) {
+					isConnected = true;
 				}
+			}
+
+			if (!isConnected) {
+				throw new IllegalMove();
 			}
 		}
 

@@ -1,5 +1,6 @@
 package nl.hanze.hive;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -86,6 +87,21 @@ public class ControllerCheck {
 			c1.play(Tile.QUEEN_BEE, 0, 0);
 
 			assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.QUEEN_BEE, 2, 2));
+		} //
+		catch (Exception e) {
+		}
+	}
+
+	@Test
+	// Requirement 4c.
+	void givenTileAndPositionWhenNeighboursThenNothing() {
+		Controller c1 = new Controller();
+
+		try {
+
+			c1.play(Tile.QUEEN_BEE, 0, 0);
+
+			assertDoesNotThrow(() -> c1.play(Tile.QUEEN_BEE, 1, 0));
 		} //
 		catch (Exception e) {
 		}
