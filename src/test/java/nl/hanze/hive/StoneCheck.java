@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
 
 import nl.hanze.hive.Hive.Player;
+import nl.hanze.hive.Hive.Tile;
 
 public class StoneCheck {
 	@Test
@@ -22,6 +23,24 @@ public class StoneCheck {
 	void givenDifferentPlayerThenNotEqual() {
 		Stone s1 = new Stone(Player.WHITE);
 		Stone s2 = new Stone(Player.BLACK);
+
+		assertNotEquals(s1, s2);
+	}
+
+	@Test
+	// Requirement 1b.
+	void givenSameTileThenEqual() {
+		Stone s1 = new Stone(Player.WHITE, Tile.BEETLE);
+		Stone s2 = new Stone(Player.WHITE, Tile.BEETLE);
+
+		assertEquals(s1, s2);
+	}
+
+	@Test
+	// Requirement 1b.
+	void givenDifferentTileThenNotEqual() {
+		Stone s1 = new Stone(Player.WHITE, Tile.BEETLE);
+		Stone s2 = new Stone(Player.BLACK, Tile.GRASSHOPPER);
 
 		assertNotEquals(s1, s2);
 	}
