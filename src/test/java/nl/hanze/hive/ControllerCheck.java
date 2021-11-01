@@ -1,5 +1,6 @@
 package nl.hanze.hive;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -41,5 +42,22 @@ public class ControllerCheck {
 		Controller c1 = new Controller(b1);
 
 		assertTrue(c1.isDraw());
+	}
+
+	@Test
+	// Requirement 4a.
+	void givenTileAndPositionWhenUnavailableThenIllegalMove() {
+		Controller c1 = new Controller();
+
+		try {
+
+			c1.play(Tile.QUEEN_BEE, 0, 0);
+			c1.play(Tile.QUEEN_BEE, 0, 1);
+
+			assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.QUEEN_BEE, 1, 0));
+
+		} //
+		catch (Exception e) {
+		}
 	}
 }
