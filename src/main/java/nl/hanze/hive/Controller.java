@@ -1,5 +1,7 @@
 package nl.hanze.hive;
 
+import nl.hanze.hive.Hive.Player;
+
 public class Controller implements Hive {
 	/**
 	 * The hand of the white player.
@@ -12,11 +14,28 @@ public class Controller implements Hive {
 	private Hand black;
 
 	/**
+	 * The board.
+	 */
+	private Board board;
+
+	/**
 	 * Class constructor.
 	 */
 	public Controller() {
 		white = new Hand(Player.WHITE);
 		black = new Hand(Player.BLACK);
+		board = new Board();
+	}
+
+	/**
+	 * Class constructor which specifies the board.
+	 * 
+	 * @param board The board to use.
+	 */
+	public Controller(Board board) {
+		white = new Hand(Player.WHITE);
+		black = new Hand(Player.BLACK);
+		this.board = board;
 	}
 
 	@Override
@@ -33,7 +52,21 @@ public class Controller implements Hive {
 
 	@Override
 	public boolean isWinner(Player player) {
-		return false;
+		// Retrieve the position of the opponent's queen bee.
+		Player opponent = Player.BLACK == player ? Player.WHITE : Player.BLACK;
+		Stone stone = new Stone(opponent, Tile.QUEEN_BEE);
+
+		Position position = board.getPosition(stone);
+
+		// Check all the neighbouring positions.
+		for (Position p : position.getNeighbours()) {
+			// When the cell is empty, the queen bee is not surrounded.
+			if (board.isEmpty(p)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override

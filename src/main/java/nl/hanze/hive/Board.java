@@ -3,6 +3,7 @@ package nl.hanze.hive;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Board {
@@ -53,5 +54,35 @@ public class Board {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns the position of the stone or null if not found.
+	 * 
+	 * @param stone The stone to locate.
+	 * @return The position or null.
+	 */
+	public Position getPosition(Stone stone) {
+		// Walk through every position on the board.
+		for (Map.Entry<Position, ArrayList<Stone>> entry : positions.entrySet()) {
+			// Return the position if it contains the stone.
+			if (entry.getValue().contains(stone)) {
+				return entry.getKey();
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Whether the provided position is empty.
+	 * 
+	 * @param position The position to check.
+	 */
+	public boolean isEmpty(Position position) {
+
+		ArrayList<Stone> stones = positions.get(position);
+
+		return stones == null || stones.size() == 0;
 	}
 }

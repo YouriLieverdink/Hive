@@ -28,4 +28,25 @@ public class BoardCheck {
 
 		assertFalse(b1.remove(p1));
 	}
+
+	@Test
+	// Requirement 3c.
+	void givenPositionWhenEmptyThenTrue() {
+		Board b1 = new Board();
+		Position p1 = new Position(-1, 1);
+
+		assertTrue(b1.isEmpty(p1));
+	}
+
+	@Test
+	// Requirement 3c.
+	void givenPositonWhenNotEmptyThenFalse() {
+		Board b1 = new Board();
+		Position p1 = new Position(-1, 1);
+		Stone s1 = new Stone(Player.WHITE);
+
+		b1.add(p1, s1);
+
+		assertFalse(b1.isEmpty(p1));
+	}
 }
