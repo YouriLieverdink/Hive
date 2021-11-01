@@ -71,7 +71,7 @@ public class Controller implements Hive {
 
 	@Override
 	public boolean isDraw() {
-		return false;
+		return isWinner(Player.WHITE) && isWinner(Player.BLACK);
 	}
 
 }
