@@ -1,5 +1,6 @@
 package nl.hanze.hive;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Position {
@@ -22,6 +23,16 @@ public class Position {
 	public Position(int q, int r) {
 		this.q = q;
 		this.r = r;
+	}
+
+	/**
+	 * The neighbouring positions of this.
+	 *
+	 * @return List<Position>
+	 */
+	public List<Position> getNeighbours() {
+		return List.of(new Position(q + 1, r - 1), new Position(q + 1, r), new Position(q, r + 1),
+				new Position(q - 1, r + 1), new Position(q - 1, r), new Position(q, r - 1));
 	}
 
 	@Override
