@@ -52,7 +52,6 @@ public class Hand {
 	public void add(Stone stone, Integer amount) {
 
 		Integer numberOf = stones.putIfAbsent(stone, amount);
-		System.out.println(numberOf);
 
 		if (numberOf != null) {
 			// The stone was already present, increment with 1.
