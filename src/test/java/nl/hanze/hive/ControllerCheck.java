@@ -1,6 +1,7 @@
 package nl.hanze.hive;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,6 +12,23 @@ import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
 public class ControllerCheck {
+	@Test
+	// Requirement 3a.
+	void givenTileAndPositionWhenWhiteStoneThenTrue() {
+		Board b1 = new Board();
+		Controller c1 = new Controller(b1);
+		Stone s1 = new Stone(Player.WHITE, Tile.QUEEN_BEE);
+
+		try {
+
+			c1.play(Tile.QUEEN_BEE, 0, 0);
+
+			assertEquals(b1.getStone(new Position(0, 0)), s1);
+		} //
+		catch (Exception e) {
+		}
+	}
+
 	@Test
 	// Requirement 3c.
 	void givenPlayerWhenWinnerThenTrue() {
