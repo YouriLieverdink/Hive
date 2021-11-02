@@ -85,10 +85,12 @@ public class Controller implements Hive {
 
 	@Override
 	public void move(int fromQ, int fromR, int toQ, int toR) throws IllegalMove {
+		turn = opponent(turn);
 	}
 
 	@Override
 	public void pass() throws IllegalMove {
+		turn = opponent(turn);
 	}
 
 	@Override

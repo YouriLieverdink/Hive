@@ -22,11 +22,67 @@ public class ControllerCheck {
 		try {
 
 			c1.play(Tile.QUEEN_BEE, 0, 0);
-
-			assertEquals(b1.getStone(new Position(0, 0)), s1);
 		} //
 		catch (Exception e) {
 		}
+
+		assertEquals(b1.getStone(new Position(0, 0)), s1);
+	}
+
+	@Test
+	// Requirement 3b.
+	void whenPlayCompletedThenNextPlayer() {
+		Board b1 = new Board();
+		Controller c1 = new Controller(b1);
+		Stone s1 = new Stone(Player.BLACK, Tile.QUEEN_BEE);
+
+		try {
+
+			c1.play(Tile.QUEEN_BEE, 0, 0);
+			c1.play(Tile.QUEEN_BEE, 0, 1);
+
+		} //
+		catch (Exception e) {
+		}
+
+		assertEquals(b1.getStone(new Position(0, 1)), s1);
+	}
+
+	@Test
+	// Requirement 3b.
+	void whenMoveCompletedThenNextPlayer() {
+		Board b1 = new Board();
+		b1.add(new Position(0, 0), new Stone(Player.WHITE));
+		Controller c1 = new Controller(b1);
+		Stone s1 = new Stone(Player.BLACK, Tile.QUEEN_BEE);
+
+		try {
+
+			c1.move(0, 0, 0, 1);
+			c1.play(Tile.QUEEN_BEE, 1, 0);
+		} //
+		catch (Exception e) {
+		}
+
+		assertEquals(s1, b1.getStone(new Position(1, 0)));
+	}
+
+	@Test
+	// Requirement 3b.
+	void whenPassCompletedThenNextPlayer() {
+		Board b1 = new Board();
+		Controller c1 = new Controller(b1);
+		Stone s1 = new Stone(Player.BLACK, Tile.QUEEN_BEE);
+
+		try {
+
+			c1.pass();
+			c1.play(Tile.QUEEN_BEE, 0, 0);
+		} //
+		catch (Exception e) {
+		}
+
+		assertEquals(s1, b1.getStone(new Position(0, 0)));
 	}
 
 	@Test
@@ -81,12 +137,11 @@ public class ControllerCheck {
 
 			c1.play(Tile.QUEEN_BEE, 0, 0);
 			c1.play(Tile.QUEEN_BEE, 0, 1);
-
-			assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.QUEEN_BEE, 1, 0));
-
 		} //
 		catch (Exception e) {
 		}
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.QUEEN_BEE, 1, 0));
 	}
 
 	@Test
@@ -97,11 +152,11 @@ public class ControllerCheck {
 		try {
 
 			c1.play(Tile.QUEEN_BEE, 0, 0);
-
-			assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.QUEEN_BEE, 0, 0));
 		} //
 		catch (Exception e) {
 		}
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.QUEEN_BEE, 0, 0));
 	}
 
 	@Test
@@ -112,11 +167,11 @@ public class ControllerCheck {
 		try {
 
 			c1.play(Tile.QUEEN_BEE, 0, 0);
-
-			assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.QUEEN_BEE, 2, 2));
 		} //
 		catch (Exception e) {
 		}
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.QUEEN_BEE, 2, 2));
 	}
 
 	@Test
@@ -127,10 +182,10 @@ public class ControllerCheck {
 		try {
 
 			c1.play(Tile.QUEEN_BEE, 0, 0);
-
-			assertDoesNotThrow(() -> c1.play(Tile.QUEEN_BEE, 1, 0));
 		} //
 		catch (Exception e) {
 		}
+
+		assertDoesNotThrow(() -> c1.play(Tile.QUEEN_BEE, 1, 0));
 	}
 }
