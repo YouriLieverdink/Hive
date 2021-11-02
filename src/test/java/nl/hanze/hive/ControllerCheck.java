@@ -1,6 +1,7 @@
 package nl.hanze.hive;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -43,6 +44,14 @@ public class ControllerCheck {
 		Controller c1 = new Controller(b1);
 
 		assertTrue(c1.isDraw());
+	}
+
+	@Test
+	// Requirement 3d.
+	void givenPlayerWhenNoQueenBeeThenFalse() {
+		Controller c1 = new Controller();
+
+		assertFalse(c1.isWinner(Player.WHITE));
 	}
 
 	@Test

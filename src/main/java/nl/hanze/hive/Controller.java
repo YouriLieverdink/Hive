@@ -55,7 +55,7 @@ public class Controller implements Hive {
 			throw new IllegalMove();
 		}
 
-		if (!board.isEmpty(new Position(q, r))) {
+		if (board.getStone(new Position(q, r)) != null) {
 			// The provided position is not empty.
 			throw new IllegalMove();
 		}
@@ -66,7 +66,7 @@ public class Controller implements Hive {
 			// Check all the neighbouring positions.
 			for (Position p : new Position(q, r).getNeighbours()) {
 				// When a cell is empty, it is not connected.
-				if (!board.isEmpty(p)) {
+				if (board.getStone(p) != null) {
 					isConnected = true;
 				}
 			}
@@ -97,10 +97,15 @@ public class Controller implements Hive {
 		Stone stone = new Stone(opponent(player), Tile.QUEEN_BEE);
 		Position position = board.getPosition(stone);
 
+		if (position == null) {
+			// The player has not played their queen bee yet.
+			return false;
+		}
+
 		// Check all the neighbouring positions.
 		for (Position p : position.getNeighbours()) {
 			// When the cell is empty, the queen bee is not surrounded.
-			if (board.isEmpty(p)) {
+			if (board.getStone(p) == null) {
 				return false;
 			}
 		}

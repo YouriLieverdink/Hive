@@ -3,7 +3,6 @@ package nl.hanze.hive;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Board {
@@ -75,15 +74,21 @@ public class Board {
 	}
 
 	/**
-	 * Whether the provided position is empty.
+	 * Returns the top stone on the provided position.
 	 * 
 	 * @param position The position to check.
+	 * @return The stone or null.
 	 */
-	public boolean isEmpty(Position position) {
+	public Stone getStone(Position position) {
 
 		ArrayList<Stone> stones = positions.get(position);
 
-		return stones == null || stones.size() == 0;
+		if (stones != null && stones.size() > 0) {
+			// Return only the top stone.
+			return stones.get(stones.size() - 1);
+		}
+
+		return null;
 	}
 
 	/**
