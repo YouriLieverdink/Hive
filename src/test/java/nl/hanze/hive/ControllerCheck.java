@@ -206,4 +206,25 @@ public class ControllerCheck {
 
 		assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.SOLDIER_ANT, 2, -3));
 	}
+
+	@Test
+	// Requirement 4d.
+	void givenTileAndPositionWhenNeighbourIsOpponentAndNotOnlyStoneThenIllegalMove() {
+		Board b1 = new Board();
+		b1.add(new Position(0, 0), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 1), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		Controller c1 = new Controller(b1);
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.SOLDIER_ANT, 0, -1));
+	}
+
+	@Test
+	// Requirement 4d.
+	void givenTileAndPositionWhenNeighbourIsOpponentAndOnlyStoneThenNothing() {
+		Board b1 = new Board();
+		b1.add(new Position(0, 0), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		Controller c1 = new Controller(b1);
+
+		assertDoesNotThrow(() -> c1.play(Tile.QUEEN_BEE, 0, 1));
+	}
 }

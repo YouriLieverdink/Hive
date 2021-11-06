@@ -76,6 +76,18 @@ public class Controller implements Hive {
 			throw new IllegalMove();
 		}
 
+		if (board.getNumberOfStones(turn) >= 1) {
+
+			for (Position p : new Position(q, r).getNeighbours()) {
+				// Check whether a neighbouring position contains a stone of the opponent.
+				Stone s1 = board.getStone(p);
+
+				if (s1 != null && !s1.belongsTo(turn)) {
+					throw new IllegalMove();
+				}
+			}
+		}
+
 		if (!board.isPure()) {
 			boolean isConnected = false;
 
