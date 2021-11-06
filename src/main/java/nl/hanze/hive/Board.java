@@ -19,19 +19,22 @@ public class Board {
 	}
 
 	/**
-	 * Add a stone to the board.
+	 * Add a stone to this board.
 	 * 
-	 * @param position The positon to add the stone to.
+	 * @param position The position to place the stone.
 	 * @param stone    The stone to add.
 	 */
 	public void add(Position position, Stone stone) {
+		// Create a list around the stone to add.
+		ArrayList<Stone> newStones = new ArrayList<>(Arrays.asList(stone));
 
-		ArrayList<Stone> stones = positions.putIfAbsent(position, new ArrayList<>(Arrays.asList(stone)));
+		// Attempt to add the stones to the position.
+		ArrayList<Stone> existingStones = positions.putIfAbsent(position, newStones);
 
-		if (stones != null) {
-			// The position already had one or more stones.
-			stones.add(stone);
-			positions.put(position, stones);
+		if (existingStones != null) {
+			// The provided position already has one or more stones.
+			existingStones.addAll(newStones);
+			positions.put(position, existingStones);
 		}
 	}
 
@@ -39,35 +42,33 @@ public class Board {
 	 * Remove the top stone from the provided position.
 	 * 
 	 * @param position The position to remove the stone from.
-	 * @return Whether the stone was present.
+	 * @return The stone or null if not found.
 	 */
-	public boolean remove(Position position) {
+	public Stone remove(Position position) {
+		// Retrieve the stones from the position.
+		ArrayList<Stone> existingStones = positions.get(position);
 
-		ArrayList<Stone> stones = positions.get(position);
-
-		if (stones != null && stones.size() > 0) {
-			// Return the top stone.
-			stones.remove(stones.size() - 1);
-			positions.put(position, stones);
-
-			return true;
+		if (existingStones != null && existingStones.size() > 0) {
+			// Remove the top stone.
+			return existingStones.remove(existingStones.size() - 1);
 		}
 
-		return false;
+		return null;
 	}
 
 	/**
-	 * Returns the position of the stone or null if not found.
+	 * Locate the position of the stone.
 	 * 
 	 * @param stone The stone to locate.
 	 * @return The position or null if not found.
 	 */
 	public Position getPosition(Stone stone) {
-		// Walk through every position on the board.
-		for (Map.Entry<Position, ArrayList<Stone>> entry : positions.entrySet()) {
-			// Return the position if it contains the stone.
-			if (entry.getValue().contains(stone)) {
-				return entry.getKey();
+		// Walk through every occupied position on the board.
+		for (Map.Entry<Position, ArrayList<Stone>> position : positions.entrySet()) {
+
+			if (position.getValue().contains(stone)) {
+				// The position contains the stone.
+				return position.getKey();
 			}
 		}
 
@@ -81,12 +82,12 @@ public class Board {
 	 * @return The stone or null if not found.
 	 */
 	public Stone getStone(Position position) {
+		// Retrieve the stones from the position.
+		ArrayList<Stone> existingStones = positions.get(position);
 
-		ArrayList<Stone> stones = positions.get(position);
-
-		if (stones != null && stones.size() > 0) {
+		if (existingStones != null && existingStones.size() > 0) {
 			// Return only the top stone.
-			return stones.get(stones.size() - 1);
+			return existingStones.get(existingStones.size() - 1);
 		}
 
 		return null;

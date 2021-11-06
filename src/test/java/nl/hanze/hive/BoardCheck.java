@@ -19,7 +19,7 @@ public class BoardCheck {
 
 		b1.add(p1, s1);
 
-		assertTrue(b1.remove(p1));
+		assertNotNull(b1.remove(p1));
 	}
 
 	@Test
@@ -28,7 +28,7 @@ public class BoardCheck {
 		Board b1 = new Board();
 		Position p1 = new Position(-1, 1);
 
-		assertFalse(b1.remove(p1));
+		assertNull(b1.remove(p1));
 	}
 
 	@Test
