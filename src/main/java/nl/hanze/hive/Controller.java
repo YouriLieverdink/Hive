@@ -1,6 +1,7 @@
 package nl.hanze.hive;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Controller implements Hive {
@@ -123,6 +124,13 @@ public class Controller implements Hive {
 
 		if (s1 == null || s1.belongsTo(opponent(turn))) {
 			// There is no stone to player or it's the opponents.
+			throw new IllegalMove();
+		}
+
+		List<Position> possibleMoves = board.getPossibleMoves(new Position(fromQ, fromR));
+
+		if (possibleMoves.isEmpty()) {
+			// There are no possible moves for the stone at the position.
 			throw new IllegalMove();
 		}
 

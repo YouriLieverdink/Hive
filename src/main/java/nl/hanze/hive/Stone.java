@@ -1,5 +1,6 @@
 package nl.hanze.hive;
 
+import java.util.List;
 import java.util.Objects;
 
 import nl.hanze.hive.Hive.Player;
@@ -44,6 +45,50 @@ public class Stone {
 	 */
 	public boolean belongsTo(Player player) {
 		return this.player == player;
+	}
+
+	/**
+	 * Returns the traits based on the face of this stone.
+	 * 
+	 * @return A list of traits.
+	 */
+	public List<Trait> getTraits() {
+
+		switch (tile) {
+			case BEETLE:
+				return List.of(Trait.moveOne, Trait.stack);
+
+			case GRASSHOPPER:
+				return List.of(Trait.jump);
+
+			case QUEEN_BEE:
+				return List.of(Trait.moveOne);
+
+			case SOLDIER_ANT:
+				return List.of(Trait.move);
+
+			case SPIDER:
+				return List.of(Trait.moveThree);
+
+			default:
+				return List.of();
+		}
+	}
+
+	/**
+	 * Types of traits.
+	 */
+	enum Trait {
+		// Allowed to move idenfinitly.
+		move,
+		// Allowed to move one times.
+		moveOne,
+		// Allowed to move three times.
+		moveThree,
+		// Allowed to jump over stones.
+		jump,
+		// Allowed to stack on top of others.
+		stack,
 	}
 
 	@Override

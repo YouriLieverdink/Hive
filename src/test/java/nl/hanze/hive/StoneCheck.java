@@ -4,10 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
+import nl.hanze.hive.Stone.Trait;
 
 public class StoneCheck {
 	@Test
@@ -52,5 +55,15 @@ public class StoneCheck {
 		Stone s1 = new Stone(Player.WHITE);
 
 		assertTrue(s1.belongsTo(Player.WHITE));
+	}
+
+	@Test
+	// Requirement 2e/5e.
+	void whenTraitsEqualThenTrue() {
+		Stone s1 = new Stone(Player.WHITE, Tile.QUEEN_BEE);
+
+		List<Trait> traits = List.of(Trait.moveOne);
+
+		assertEquals(traits, s1.getTraits());
 	}
 }

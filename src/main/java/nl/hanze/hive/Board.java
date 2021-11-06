@@ -3,6 +3,7 @@ package nl.hanze.hive;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import nl.hanze.hive.Hive.Player;
@@ -125,5 +126,16 @@ public class Board {
 		}
 
 		return numberOf;
+	}
+
+	/**
+	 * The possible moves for the stone at the provided position.
+	 * 
+	 * @param position The position of the stone.
+	 * @return A list of possible positions.
+	 */
+	public List<Position> getPossibleMoves(Position position) {
+
+		return List.of(new Position(0, 0));
 	}
 }
