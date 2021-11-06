@@ -39,6 +39,7 @@ public class Board {
 	 * Remove the top stone from the provided position.
 	 * 
 	 * @param position The position to remove the stone from.
+	 * @return Whether the stone was present.
 	 */
 	public boolean remove(Position position) {
 
@@ -59,7 +60,7 @@ public class Board {
 	 * Returns the position of the stone or null if not found.
 	 * 
 	 * @param stone The stone to locate.
-	 * @return The position or null.
+	 * @return The position or null if not found.
 	 */
 	public Position getPosition(Stone stone) {
 		// Walk through every position on the board.
@@ -77,7 +78,7 @@ public class Board {
 	 * Returns the top stone on the provided position.
 	 * 
 	 * @param position The position to check.
-	 * @return The stone or null.
+	 * @return The stone or null if not found.
 	 */
 	public Stone getStone(Position position) {
 

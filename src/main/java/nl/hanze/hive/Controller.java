@@ -5,17 +5,17 @@ import java.util.Map;
 
 public class Controller implements Hive {
 	/**
-	 * The hands of the active players.
+	 * The players and their hand.
 	 */
-	private Map<Player, Hand> hands;
+	private Map<Player, Hand> players;
 
 	/**
-	 * The active board.
+	 * The board.
 	 */
 	private Board board;
 
 	/**
-	 * The player whose turn it is.
+	 * The player who's turn it is.
 	 */
 	private Player turn;
 
@@ -23,23 +23,24 @@ public class Controller implements Hive {
 	 * Class constructor.
 	 */
 	public Controller() {
-		// Initialise the hands of the players.
-		hands = new HashMap<>();
+		// Initialise the players.
+		players = new HashMap<>();
 
 		for (Player player : Player.values()) {
 
 			Hand hand = new Hand();
 
+			// The starting set of stones.
 			hand.add(new Stone(player, Tile.QUEEN_BEE));
 			hand.add(new Stone(player, Tile.SPIDER), 2);
 			hand.add(new Stone(player, Tile.BEETLE), 2);
 			hand.add(new Stone(player, Tile.SOLDIER_ANT), 3);
 			hand.add(new Stone(player, Tile.GRASSHOPPER), 3);
 
-			hands.put(player, hand);
+			players.put(player, hand);
 		}
 
-		// Create the board and set the turn.
+		// Initialise the board and set the first turn.
 		board = new Board();
 		turn = Player.WHITE;
 	}
@@ -47,7 +48,7 @@ public class Controller implements Hive {
 	/**
 	 * Class constructor which specifies the board.
 	 * 
-	 * @param board The board to use.
+	 * @param board The board to use instead of an empty board.
 	 */
 	public Controller(Board board) {
 		this();
@@ -60,7 +61,7 @@ public class Controller implements Hive {
 		// Create the stone to play.
 		Stone stone = new Stone(turn, tile);
 
-		if (!hands.get(turn).remove(stone)) {
+		if (!players.get(turn).remove(stone)) {
 			// The player does not have the stone.
 			throw new IllegalMove();
 		}

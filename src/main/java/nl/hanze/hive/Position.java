@@ -28,7 +28,7 @@ public class Position {
 	/**
 	 * The neighbouring positions of this.
 	 *
-	 * @return List<Position>
+	 * @return A list of neighbouring positions.
 	 */
 	public List<Position> getNeighbours() {
 		return List.of(new Position(q + 1, r - 1), new Position(q + 1, r), new Position(q, r + 1),

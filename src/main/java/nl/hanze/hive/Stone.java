@@ -7,12 +7,12 @@ import nl.hanze.hive.Hive.Tile;
 
 public class Stone {
 	/**
-	 * To whom the stone belongs.
+	 * The owner of the stone.
 	 */
 	private Player player;
 
 	/**
-	 * The face of the stone.
+	 * The stone's face.
 	 */
 	private Tile tile;
 

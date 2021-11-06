@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Hand {
 	/**
-	 * The stones which the hand holds.
+	 * The stones at hand an their quantity.
 	 */
 	private Map<Stone, Integer> stones;
 
@@ -26,7 +26,7 @@ public class Hand {
 	}
 
 	/**
-	 * Adds a stone more than one times to the hand.
+	 * Adds a stone (amount) number of times.
 	 * 
 	 * @param stone  The stone to add.
 	 * @param amount The number of times the stone should be added.
@@ -45,6 +45,7 @@ public class Hand {
 	 * Removes a stone from the hand. Returns true when successfull.
 	 * 
 	 * @param stone The stone to remove.
+	 * @return Whether the stone was present.
 	 */
 	public boolean remove(Stone stone) {
 
