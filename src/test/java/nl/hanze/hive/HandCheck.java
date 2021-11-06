@@ -44,7 +44,9 @@ public class HandCheck {
 	@Test
 	// Requirement 1c.
 	void givenPlayerWhenStoneRemovedThenTrue() {
-		Hand h1 = new Hand(Player.WHITE);
+		Hand h1 = new Hand();
+		Stone s1 = new Stone(Player.WHITE, Tile.QUEEN_BEE);
+		h1.add(s1);
 
 		assertTrue(h1.remove(new Stone(Player.WHITE, Tile.QUEEN_BEE)));
 	}

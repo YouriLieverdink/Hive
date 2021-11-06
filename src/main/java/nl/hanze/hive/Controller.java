@@ -25,8 +25,18 @@ public class Controller implements Hive {
 	public Controller() {
 		// Initialise the hands of the players.
 		hands = new HashMap<>();
-		for (Player p : Player.values()) {
-			hands.put(p, new Hand(p));
+
+		for (Player player : Player.values()) {
+
+			Hand hand = new Hand();
+
+			hand.add(new Stone(player, Tile.QUEEN_BEE));
+			hand.add(new Stone(player, Tile.SPIDER), 2);
+			hand.add(new Stone(player, Tile.BEETLE), 2);
+			hand.add(new Stone(player, Tile.SOLDIER_ANT), 3);
+			hand.add(new Stone(player, Tile.GRASSHOPPER), 3);
+
+			hands.put(player, hand);
 		}
 
 		// Create the board and set the turn.

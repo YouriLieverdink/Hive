@@ -3,9 +3,6 @@ package nl.hanze.hive;
 import java.util.HashMap;
 import java.util.Map;
 
-import nl.hanze.hive.Hive.Player;
-import nl.hanze.hive.Hive.Tile;
-
 public class Hand {
 	/**
 	 * The stones which the hand holds.
@@ -17,21 +14,6 @@ public class Hand {
 	 */
 	public Hand() {
 		stones = new HashMap<>();
-	}
-
-	/**
-	 * Class constructor which specifies the player.
-	 * 
-	 * @param player The player whose hand it is.
-	 */
-	public Hand(Player player) {
-		this();
-
-		add(new Stone(player, Tile.QUEEN_BEE));
-		add(new Stone(player, Tile.SPIDER), 2);
-		add(new Stone(player, Tile.BEETLE), 2);
-		add(new Stone(player, Tile.SOLDIER_ANT), 3);
-		add(new Stone(player, Tile.GRASSHOPPER), 3);
 	}
 
 	/**
