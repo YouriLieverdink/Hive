@@ -229,10 +229,23 @@ public class ControllerCheck {
 	}
 
 	@Test
-	// Requirement 5a.
+	// Requirement 5b.
 	void givenFromAndToPositionsWhenQueenBeeNotPlayedThenIllegalMove() {
 		Controller c1 = new Controller();
 
 		assertThrows(Hive.IllegalMove.class, () -> c1.move(0, 0, 0, 1));
+	}
+
+	@Test
+	// Requirement 5a.
+	void givenFromAndToPostionWhenNotStoneOwnerThenIllegalMove() {
+		Board b1 = new Board();
+		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		b1.add(new Position(0, -1), new Stone(Player.BLACK, Tile.SOLDIER_ANT));
+		b1.add(new Position(1, 0), new Stone(Player.WHITE, Tile.GRASSHOPPER));
+		b1.add(new Position(1, -2), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		Controller c1 = new Controller(b1);
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.move(1, -2, 0, -2));
 	}
 }

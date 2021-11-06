@@ -113,9 +113,16 @@ public class Controller implements Hive {
 
 	@Override
 	public void move(int fromQ, int fromR, int toQ, int toR) throws IllegalMove {
+		// Retrieve the stone.
+		Stone s1 = board.getStone(new Position(fromQ, fromR));
 
 		if (board.getPosition(new Stone(turn, Tile.QUEEN_BEE)) == null) {
 			// The queen bee should be played before moving tiles.
+			throw new IllegalMove();
+		}
+
+		if (s1 == null || s1.belongsTo(opponent(turn))) {
+			// There is no stone to player or it's the opponents.
 			throw new IllegalMove();
 		}
 
