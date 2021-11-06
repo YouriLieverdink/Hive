@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.hanze.hive.Hive.Player;
+
 public class Board {
 	/**
 	 * The positions and the stones on that position.
@@ -99,5 +101,29 @@ public class Board {
 	public boolean isPure() {
 
 		return positions.isEmpty();
+	}
+
+	/**
+	 * Counts the number of stones on the board for a player.
+	 * 
+	 * @param player The player to count the stones for.
+	 * @return The number of stones.
+	 */
+	public Integer getNumberOfStones(Player player) {
+		// The count.
+		int numberOf = 0;
+
+		// Walk through all the positions on the board.
+		for (ArrayList<Stone> stones : positions.values()) {
+			// Walk through all the stones on the position.
+			for (Stone stone : stones) {
+
+				if (stone.belongsTo(player)) {
+					numberOf += 1;
+				}
+			}
+		}
+
+		return numberOf;
 	}
 }

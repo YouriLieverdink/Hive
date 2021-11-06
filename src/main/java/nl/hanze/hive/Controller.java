@@ -61,6 +61,11 @@ public class Controller implements Hive {
 		// Create the stone to play.
 		Stone stone = new Stone(turn, tile);
 
+		if (board.getPosition(new Stone(turn, Tile.QUEEN_BEE)) == null && board.getNumberOfStones(turn) == 3) {
+			// The player is on their 4th turn and hasn't player their queen bee yet.
+			throw new IllegalMove();
+		}
+
 		if (!players.get(turn).remove(stone)) {
 			// The player does not have the stone.
 			throw new IllegalMove();

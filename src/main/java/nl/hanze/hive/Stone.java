@@ -36,6 +36,16 @@ public class Stone {
 		this.tile = tile;
 	}
 
+	/**
+	 * Whether the player is owner of this stone.
+	 * 
+	 * @param player The player to compare against.
+	 * @return Whether the player is the owner.
+	 */
+	public boolean belongsTo(Player player) {
+		return this.player == player;
+	}
+
 	@Override
 	public boolean equals(Object object) {
 

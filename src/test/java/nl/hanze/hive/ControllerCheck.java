@@ -188,4 +188,22 @@ public class ControllerCheck {
 
 		assertDoesNotThrow(() -> c1.play(Tile.QUEEN_BEE, 1, 0));
 	}
+
+	@Test
+	// Requirement 4e.
+	void givenTileAndPositionWhenFourthPlayAndNotQueenBeeThenIllegalMove() {
+		Board b1 = new Board();
+
+		b1.add(new Position(0, 0), new Stone(Player.BLACK, Tile.SOLDIER_ANT));
+		b1.add(new Position(1, 0), new Stone(Player.WHITE, Tile.BEETLE));
+		b1.add(new Position(0, -1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(2, -1), new Stone(Player.WHITE, Tile.SOLDIER_ANT));
+		b1.add(new Position(0, -2), new Stone(Player.BLACK, Tile.BEETLE));
+		b1.add(new Position(2, -2), new Stone(Player.WHITE, Tile.SPIDER));
+		b1.add(new Position(-1, -1), new Stone(Player.BLACK, Tile.BEETLE));
+
+		Controller c1 = new Controller(b1);
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.play(Tile.SOLDIER_ANT, 2, -3));
+	}
 }
