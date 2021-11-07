@@ -25,20 +25,34 @@ public class Rules {
 	 * @return Whether the slide is allowed.
 	 */
 	private static boolean isAllowedToSlide(Board board, Position from, Position to) {
-		// Retrieve the common neighbours of the from and to positions.
-		ArrayList<Position> neighbours = from.getNeighbours();
-		neighbours.retainAll(to.getNeighbours());
+		// Retrieve the neighbouring positions for both positions.
+		ArrayList<Position> fromNeighbours = from.getNeighbours();
+		ArrayList<Position> toNeighbours = to.getNeighbours();
 
-		if (neighbours.size() == 1) {
-			// The positions are not adjecent.
+		// The common neighbours of both positions.
+		ArrayList<Position> common = fromNeighbours;
+		common.retainAll(toNeighbours);
+
+		if (common.size() <= 1) {
+			// 6b. The positions are not adjecent.
 			return false;
 		}
 
-		int n1 = board.getNumberOfStones(neighbours.get(0));
-		int n2 = board.getNumberOfStones(neighbours.get(1));
+		int n1 = board.getNumberOfStones(common.get(0));
+		int n2 = board.getNumberOfStones(common.get(1));
 		int a = board.getNumberOfStones(from);
 		int b = board.getNumberOfStones(to);
 
-		return Math.min(n1, n2) <= Math.max(a - 1, b);
+		if (Math.min(n1, n2) > Math.max(a - 1, b)) {
+			// 6b. The stone must be slid between the positions.
+			return false;
+		}
+
+		if (board.getStone(common.get(0)) == null && board.getStone(common.get(1)) == null) {
+			// 6c. A stone must always be in contact with another stone.
+			return false;
+		}
+
+		return true;
 	}
 }

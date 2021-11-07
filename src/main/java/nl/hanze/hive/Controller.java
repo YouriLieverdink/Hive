@@ -148,8 +148,8 @@ public class Controller implements Hive {
 			// Re-add the removed stone.
 			board.add(from, stone);
 
-			// 5d. The stone can't be moved because it separats the hive.
-			throw new IllegalMove();
+			// 5d. The stone can't be moved because it separates the hive.
+			throw new IllegalMove("This move separates the hive.");
 		}
 
 		// Add the stone to the new position.

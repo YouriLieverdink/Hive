@@ -52,6 +52,7 @@ public class ControllerCheck {
 	// Requirement 3b.
 	void whenMoveCompletedThenNextPlayer() {
 		Board b1 = new Board();
+		b1.add(new Position(-1, 1), new Stone(Player.WHITE, Tile.BEETLE));
 		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
 		Controller c1 = new Controller(b1);
 		Stone s1 = new Stone(Player.BLACK, Tile.QUEEN_BEE);
@@ -62,7 +63,7 @@ public class ControllerCheck {
 			c1.play(Tile.QUEEN_BEE, 1, 0);
 		} //
 		catch (Exception e) {
-			System.out.println(e.toString());
+			System.out.println(e);
 		}
 
 		assertEquals(s1, b1.getStone(new Position(1, 0)));
@@ -287,5 +288,19 @@ public class ControllerCheck {
 		Controller c1 = new Controller(b1);
 
 		assertThrows(Hive.IllegalMove.class, () -> c1.move(0, 0, -1, 1));
+	}
+
+	@Test
+	// Requirement 6c.
+	void givenFromAndToPositionWhenNotAlwaysInContactThenIllegalMove() {
+		Board b1 = new Board();
+		b1.add(new Position(-1, 1), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		b1.add(new Position(-1, 0), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(0, -1), new Stone(Player.WHITE, Tile.SOLDIER_ANT));
+		b1.add(new Position(1, -1), new Stone(Player.BLACK, Tile.SOLDIER_ANT));
+		b1.add(new Position(1, 0), new Stone(Player.WHITE, Tile.SOLDIER_ANT));
+		Controller c1 = new Controller(b1);
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.move(-1, 1, 0, 1));
 	}
 }
