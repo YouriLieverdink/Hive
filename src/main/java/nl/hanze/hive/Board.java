@@ -53,7 +53,14 @@ public class Board {
 
 		if (existingStones != null && existingStones.size() > 0) {
 			// Remove the top stone.
-			return existingStones.remove(existingStones.size() - 1);
+			Stone s1 = existingStones.remove(existingStones.size() - 1);
+
+			if (existingStones.isEmpty()) {
+				// Remove the entry when no more stones are left.
+				positions.remove(position);
+			}
+
+			return s1;
 		}
 
 		return null;
@@ -135,7 +142,52 @@ public class Board {
 	 * @return A list of possible positions.
 	 */
 	public List<Position> getPossibleMoves(Position position) {
+		// Temporarily remove the stone.
+		Stone s1 = remove(position);
 
-		return List.of(new Position(0, 0));
+		// Check whether the board is still connected.
+		if (!isConnected()) {
+			// Readd the removed stone.
+			add(position, s1);
+
+			return List.of();
+		}
+
+		return List.of(new Position(0, 1), new Position(1, -1));
+	}
+
+	/**
+	 * Whether the hive is currently connected.
+	 * 
+	 * @return Whether the hive is connected.
+	 */
+	public boolean isConnected() {
+		// Check whether the board has any stones.
+		if (positions.isEmpty()) {
+			return true;
+		}
+
+		// Retrieve the starting position.
+		Position initial = positions.keySet().iterator().next();
+
+		ArrayList<Position> todo = new ArrayList<>(Arrays.asList(initial));
+		ArrayList<Position> visited = new ArrayList<>(Arrays.asList(initial));
+
+		while (!todo.isEmpty()) {
+			// Retrieve the position.
+			Position position = todo.remove(0);
+
+			// Walk through its neighbours.
+			for (Position p : position.getNeighbours()) {
+
+				if (getStone(p) != null && !visited.contains(p)) {
+					// There is a stone and its position has not yet been visited.
+					todo.add(p);
+					visited.add(p);
+				}
+			}
+		}
+
+		return visited.containsAll(positions.keySet());
 	}
 }

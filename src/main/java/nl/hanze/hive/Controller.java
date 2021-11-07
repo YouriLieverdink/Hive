@@ -134,6 +134,11 @@ public class Controller implements Hive {
 			throw new IllegalMove();
 		}
 
+		if (!possibleMoves.contains(new Position(toQ, toR))) {
+			// The provided move is not possible.
+			throw new IllegalMove();
+		}
+
 		turn = opponent(turn);
 	}
 
