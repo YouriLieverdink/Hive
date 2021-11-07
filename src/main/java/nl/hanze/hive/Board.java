@@ -136,29 +136,6 @@ public class Board {
 	}
 
 	/**
-	 * The possible moves for the stone at the provided position.
-	 * 
-	 * @param position The position of the stone.
-	 * @return A list of possible positions.
-	 */
-	public List<Position> getPossibleMoves(Position position) {
-		// Temporarily remove the stone.
-		Stone s1 = remove(position);
-
-		// Check whether the board is still connected.
-		if (!isConnected()) {
-			// Readd the removed stone.
-			add(position, s1);
-
-			return List.of();
-		}
-
-		add(position, s1);
-
-		return List.of(new Position(0, 1), new Position(1, -1), new Position(0, 2), new Position(2, 1));
-	}
-
-	/**
 	 * Whether the hive is currently connected.
 	 * 
 	 * @return Whether the hive is connected.

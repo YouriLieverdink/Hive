@@ -115,46 +115,53 @@ public class Controller implements Hive {
 
 	@Override
 	public void move(int fromQ, int fromR, int toQ, int toR) throws IllegalMove {
-		// Retrieve the stone.
-		Stone s1 = board.getStone(new Position(fromQ, fromR));
+		// Create the positions.
+		Position from = new Position(fromQ, fromR);
+		Position to = new Position(toQ, toR);
+
+		// Retrieve the stone from the board.
+		Stone stone = board.getStone(from);
+
+		if (stone == null) {
+			// There is no stone at the provided location.
+			throw new IllegalMove("There is no stone at the provided location.");
+		}
+
+		if (!stone.belongsTo(turn)) {
+			// 5a. The stone does not belong to the current player.
+			throw new IllegalMove("The stone does not belong to you.");
+		}
 
 		if (board.getPosition(new Stone(turn, Tile.QUEEN_BEE)) == null) {
-			// The queen bee should be played before moving tiles.
-			throw new IllegalMove("Play the queen bee before moving tiles.");
+			// 5b. The queen must be added in order to move tiles.
+			throw new IllegalMove("The queen bee must be added before moving tiles.");
 		}
 
-		if (s1 == null || s1.belongsTo(opponent(turn))) {
-			// There is no stone to player or it's the opponents.
-			throw new IllegalMove("There is no stone or it's the opponents.");
-		}
+		// Remove the stone from the old position.
+		board.remove(from);
 
-		List<Position> possibleMoves = board.getPossibleMoves(new Position(fromQ, fromR));
-
-		if (possibleMoves.isEmpty()) {
-			// There are no possible moves for the stone at the position.
-			throw new IllegalMove("There are no possible moves for this stone.");
-		}
-
-		if (!possibleMoves.contains(new Position(toQ, toR))) {
-			// The provided move is not possible.
-			throw new IllegalMove("The provided move is not possible.");
-		}
-
-		// Remove the stone from the board.
-		board.remove(new Position(fromQ, fromR));
-
-		// Place the stone at the provided location.
-		board.add(new Position(toQ, toR), s1);
-
-		// Check whether the board is connected.
 		if (!board.isConnected()) {
-			// Re-add and re-remove the stones.
-			board.remove(new Position(toQ, toR));
-			board.add(new Position(fromQ, toR), s1);
+			// Re-add the removed stone.
+			board.add(from, stone);
 
-			throw new IllegalMove("The board is no longer connected.");
+			// 5d. The stone can't be moved because it separats the hive.
+			throw new IllegalMove();
 		}
 
+		// Add the stone to the new position.
+		board.add(to, stone);
+
+		if (!board.isConnected()) {
+			// Re-add the removed stone.
+			board.add(from, stone);
+			// Remove the added stone.
+			board.remove(to);
+
+			// 5c. The stone must be connected to at least on other stone.
+			throw new IllegalMove("The stone must be moved to a position next to at least one stone");
+		}
+
+		// Move turn to the opponent.
 		turn = opponent(turn);
 	}
 
