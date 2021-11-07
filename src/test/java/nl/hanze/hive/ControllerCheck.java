@@ -262,4 +262,15 @@ public class ControllerCheck {
 
 		assertThrows(Hive.IllegalMove.class, () -> c1.move(0, 0, 1, -1));
 	}
+
+	@Test
+	// Requirement 5c.
+	void givenFromAndToPositionsWhenNewLocationNoNeighboursThenIllegalMove() {
+		Board b1 = new Board();
+		b1.add(new Position(0, 0), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 1), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		Controller c1 = new Controller(b1);
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.move(0, 1, 0, 2));
+	}
 }

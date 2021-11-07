@@ -153,7 +153,7 @@ public class Board {
 			return List.of();
 		}
 
-		return List.of(new Position(0, 1), new Position(1, -1));
+		return List.of(new Position(0, 1), new Position(1, -1), new Position(0, 2));
 	}
 
 	/**

@@ -64,17 +64,17 @@ public class Controller implements Hive {
 
 		if (board.getPosition(new Stone(turn, Tile.QUEEN_BEE)) == null && board.getNumberOfStones(turn) == 3) {
 			// The player is on their 4th turn and hasn't player their queen bee yet.
-			throw new IllegalMove();
+			throw new IllegalMove("fourth turn and no queen bee");
 		}
 
 		if (!players.get(turn).remove(stone)) {
 			// The player does not have the stone.
-			throw new IllegalMove();
+			throw new IllegalMove("player does not own the played stone");
 		}
 
 		if (board.getStone(new Position(q, r)) != null) {
 			// The provided position is not empty.
-			throw new IllegalMove();
+			throw new IllegalMove("There is already a stone at the position");
 		}
 
 		if (board.getNumberOfStones(turn) >= 1) {
@@ -84,7 +84,7 @@ public class Controller implements Hive {
 				Stone s1 = board.getStone(p);
 
 				if (s1 != null && !s1.belongsTo(turn)) {
-					throw new IllegalMove();
+					throw new IllegalMove("The stone is placed next to an opponent's stone.");
 				}
 			}
 		}
@@ -101,7 +101,7 @@ public class Controller implements Hive {
 			}
 
 			if (!isConnected) {
-				throw new IllegalMove();
+				throw new IllegalMove("The stone must be placed next to another stone.");
 			}
 		}
 
@@ -119,24 +119,32 @@ public class Controller implements Hive {
 
 		if (board.getPosition(new Stone(turn, Tile.QUEEN_BEE)) == null) {
 			// The queen bee should be played before moving tiles.
-			throw new IllegalMove();
+			throw new IllegalMove("Play the queen bee before moving tiles.");
 		}
 
 		if (s1 == null || s1.belongsTo(opponent(turn))) {
 			// There is no stone to player or it's the opponents.
-			throw new IllegalMove();
+			throw new IllegalMove("There is no stone or it's the opponents.");
 		}
 
 		List<Position> possibleMoves = board.getPossibleMoves(new Position(fromQ, fromR));
 
 		if (possibleMoves.isEmpty()) {
 			// There are no possible moves for the stone at the position.
-			throw new IllegalMove();
+			throw new IllegalMove("There are no possible moves for this stone.");
 		}
 
 		if (!possibleMoves.contains(new Position(toQ, toR))) {
 			// The provided move is not possible.
-			throw new IllegalMove();
+			throw new IllegalMove("The provided move is not possible.");
+		}
+
+		// Place the stone at the provided location.
+		board.add(new Position(toQ, toR), s1);
+
+		// Check whether the board is connected.
+		if (!board.isConnected()) {
+			throw new IllegalMove("The board is no longer connected.");
 		}
 
 		turn = opponent(turn);
