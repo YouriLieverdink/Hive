@@ -67,11 +67,6 @@ public class Controller implements Hive {
 			throw new IllegalMove("fourth turn and no queen bee");
 		}
 
-		if (!players.get(turn).remove(stone)) {
-			// The player does not have the stone.
-			throw new IllegalMove("player does not own the played stone");
-		}
-
 		if (board.getStone(new Position(q, r)) != null) {
 			// The provided position is not empty.
 			throw new IllegalMove("There is already a stone at the position");
@@ -103,6 +98,11 @@ public class Controller implements Hive {
 			if (!isConnected) {
 				throw new IllegalMove("The stone must be placed next to another stone.");
 			}
+		}
+
+		if (!players.get(turn).remove(stone)) {
+			// The player does not have the stone.
+			throw new IllegalMove("player does not own the played stone");
 		}
 
 		// Add it to the board.
@@ -139,11 +139,18 @@ public class Controller implements Hive {
 			throw new IllegalMove("The provided move is not possible.");
 		}
 
+		// Remove the stone from the board.
+		board.remove(new Position(fromQ, fromR));
+
 		// Place the stone at the provided location.
 		board.add(new Position(toQ, toR), s1);
 
 		// Check whether the board is connected.
 		if (!board.isConnected()) {
+			// Re-add and re-remove the stones.
+			board.remove(new Position(toQ, toR));
+			board.add(new Position(fromQ, toR), s1);
+
 			throw new IllegalMove("The board is no longer connected.");
 		}
 
