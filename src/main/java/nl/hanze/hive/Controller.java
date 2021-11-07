@@ -136,6 +136,11 @@ public class Controller implements Hive {
 			throw new IllegalMove("The queen bee must be added before moving tiles.");
 		}
 
+		if (!Rules.isAllowedToMove(board, from, to)) {
+			// The move is not allowed.
+			throw new IllegalMove("This is not a valid move.");
+		}
+
 		// Remove the stone from the old position.
 		board.remove(from);
 

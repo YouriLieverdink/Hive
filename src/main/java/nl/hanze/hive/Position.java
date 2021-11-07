@@ -1,6 +1,7 @@
 package nl.hanze.hive;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Position {
@@ -30,9 +31,9 @@ public class Position {
 	 *
 	 * @return A list of neighbouring positions.
 	 */
-	public List<Position> getNeighbours() {
-		return List.of(new Position(q + 1, r - 1), new Position(q + 1, r), new Position(q, r + 1),
-				new Position(q - 1, r + 1), new Position(q - 1, r), new Position(q, r - 1));
+	public ArrayList<Position> getNeighbours() {
+		return new ArrayList<>(Arrays.asList(new Position(q + 1, r - 1), new Position(q + 1, r), new Position(q, r + 1),
+				new Position(q - 1, r + 1), new Position(q - 1, r), new Position(q, r - 1)));
 	}
 
 	@Override

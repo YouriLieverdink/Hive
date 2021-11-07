@@ -168,4 +168,22 @@ public class Board {
 
 		return visited.containsAll(positions.keySet());
 	}
+
+	/**
+	 * Returns the number of stones on the provided position.
+	 * 
+	 * @param position The position to count the stones.
+	 * @return The number of stones.
+	 */
+	public int getNumberOfStones(Position position) {
+		// Retrieve the stones from the position.
+		ArrayList<Stone> existingStones = positions.get(position);
+
+		if (existingStones == null) {
+			// There are no stones at the location.
+			return 0;
+		}
+
+		return existingStones.size();
+	}
 }

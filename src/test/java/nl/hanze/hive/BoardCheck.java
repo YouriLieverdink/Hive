@@ -99,4 +99,15 @@ public class BoardCheck {
 
 		assertFalse(b1.isConnected());
 	}
+
+	@Test
+	// Requirement 6b.
+	void givenPositionWhenNumberOfStonesEqualThenTrue() {
+		Board b1 = new Board();
+		Position p1 = new Position(0, 0);
+		b1.add(p1, new Stone(Player.WHITE));
+		b1.add(p1, new Stone(Player.WHITE));
+
+		assertEquals(2, b1.getNumberOfStones(p1));
+	}
 }
