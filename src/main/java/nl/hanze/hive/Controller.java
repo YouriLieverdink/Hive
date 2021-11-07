@@ -59,56 +59,57 @@ public class Controller implements Hive {
 
 	@Override
 	public void play(Tile tile, int q, int r) throws IllegalMove {
-		// Create the stone to play.
+		// Create the stone and position.
 		Stone stone = new Stone(turn, tile);
+		Position position = new Position(q, r);
 
-		if (board.getPosition(new Stone(turn, Tile.QUEEN_BEE)) == null && board.getNumberOfStones(turn) == 3) {
-			// The player is on their 4th turn and hasn't player their queen bee yet.
-			throw new IllegalMove("fourth turn and no queen bee");
+		if (board.getStone(position) != null) {
+			// 4b. The provided position is not empty.
+			throw new IllegalMove("The provided position is not empty.");
 		}
 
-		if (board.getStone(new Position(q, r)) != null) {
-			// The provided position is not empty.
-			throw new IllegalMove("There is already a stone at the position");
-		}
-
-		if (board.getNumberOfStones(turn) >= 1) {
-
-			for (Position p : new Position(q, r).getNeighbours()) {
-				// Check whether a neighbouring position contains a stone of the opponent.
-				Stone s1 = board.getStone(p);
-
-				if (s1 != null && !s1.belongsTo(turn)) {
-					throw new IllegalMove("The stone is placed next to an opponent's stone.");
-				}
-			}
+		if (board.getNumberOfStones(turn) == 3 && board.getPosition(new Stone(turn, Tile.QUEEN_BEE)) == null) {
+			// 4e. The queen bee must be added within the first four moves.
+			throw new IllegalMove("Fourth move, add the queen bee.");
 		}
 
 		if (!board.isPure()) {
-			boolean isConnected = false;
+			// Temporarely add the stone.
+			board.add(position, stone);
 
-			// Check all the neighbouring positions.
-			for (Position p : new Position(q, r).getNeighbours()) {
-				// When a cell is empty, it is not connected.
-				if (board.getStone(p) != null) {
-					isConnected = true;
-				}
+			if (!board.isConnected()) {
+				// Remove the temporary stone.
+				board.remove(position);
+
+				// 4c. A stone must be played next to another stone.
+				throw new IllegalMove("The stone must be played next to another stone.");
 			}
 
-			if (!isConnected) {
-				throw new IllegalMove("The stone must be placed next to another stone.");
+			board.remove(position);
+		}
+
+		if (board.getNumberOfStones(turn) >= 1) {
+			// Walk through all neighbouring positions of the provided position.
+			for (Position p : position.getNeighbours()) {
+				// Retrieve the stone from the board.
+				Stone s = board.getStone(p);
+
+				if (s != null && !s.belongsTo(turn)) {
+					// 4d. When both players have stones, it must be played next to the same color.
+					throw new IllegalMove("The stone must be played next to your own stone.");
+				}
 			}
 		}
 
 		if (!players.get(turn).remove(stone)) {
-			// The player does not have the stone.
-			throw new IllegalMove("player does not own the played stone");
+			// 4a. The player does not have the stone at hand.
+			throw new IllegalMove("You do not have one of the played stone left.");
 		}
 
-		// Add it to the board.
+		// Add the stone.
 		board.add(new Position(q, r), stone);
 
-		// Set the turn to the opponent.
+		// Move turn to the opponent.
 		turn = opponent(turn);
 	}
 
