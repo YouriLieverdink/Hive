@@ -1,23 +1,26 @@
 package nl.hanze.hive;
 
+import java.util.List;
+import java.util.Objects;
+
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
 public class Stone {
 	/**
-	 * The player to which the stone belongs.
+	 * The owner of the stone.
 	 */
 	private Player player;
 
 	/**
-	 * The image on the stone.
+	 * The stone's face.
 	 */
 	private Tile tile;
 
 	/**
 	 * Class constructor which specifies the player.
 	 * 
-	 * @param player The player.
+	 * @param Player The player.
 	 */
 	public Stone(Player player) {
 		this(player, Tile.BEETLE);
@@ -26,8 +29,8 @@ public class Stone {
 	/**
 	 * Class constructor which specifies the player and tile.
 	 * 
-	 * @param player The player.
-	 * @param tile   The tile.
+	 * @param Player The player.
+	 * @param Tile   The tile.
 	 */
 	public Stone(Player player, Tile tile) {
 		this.player = player;
@@ -35,35 +38,78 @@ public class Stone {
 	}
 
 	/**
-	 * Retrieve the player.
-	 *
-	 * @return Player
+	 * Whether the player is owner of this stone.
+	 * 
+	 * @param player The player to compare against.
+	 * @return Whether the player is the owner.
 	 */
-	public Player getPlayer() {
-		return player;
+	public boolean belongsTo(Player player) {
+		return this.player == player;
 	}
 
 	/**
-	 * Retrieve the Tile.
-	 *
-	 * @return Tile
+	 * Returns the traits based on the face of this stone.
+	 * 
+	 * @return A list of traits.
 	 */
-	public Tile getTile() {
-		return tile;
+	public List<Trait> getTraits() {
+
+		switch (tile) {
+		case BEETLE:
+			return List.of(Trait.moveOne, Trait.stack);
+
+		case GRASSHOPPER:
+			return List.of(Trait.jump);
+
+		case QUEEN_BEE:
+			return List.of(Trait.moveOne);
+
+		case SOLDIER_ANT:
+			return List.of(Trait.move);
+
+		case SPIDER:
+			return List.of(Trait.moveThree);
+
+		default:
+			return List.of();
+		}
+	}
+
+	/**
+	 * Types of traits.
+	 */
+	enum Trait {
+		// Allowed to move idenfinitly.
+		move,
+		// Allowed to move one times.
+		moveOne,
+		// Allowed to move three times.
+		moveThree,
+		// Allowed to jump over stones.
+		jump,
+		// Allowed to stack on top of others.
+		stack,
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+
+		if (this == object) {
 			return true;
 		}
 
-		if (obj == null || this.getClass() != obj.getClass()) {
+		if (object == null || getClass() != object.getClass()) {
 			return false;
 		}
 
-		Stone stone = (Stone) obj;
+		Stone s1 = (Stone) object;
 
-		return this.player == stone.player && this.tile == stone.tile;
+		return s1.player == player && s1.tile == tile;
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(player, tile);
 	}
 }

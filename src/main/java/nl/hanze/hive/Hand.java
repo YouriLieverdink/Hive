@@ -1,110 +1,63 @@
 package nl.hanze.hive;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import nl.hanze.hive.Hive.Player;
-import nl.hanze.hive.Hive.Tile;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Hand {
     /**
-     * The player to which the hand belongs.
+     * The stones at hand an their quantity.
      */
-    private final Player player;
+    private Map<Stone, Integer> stones;
 
     /**
-     * The hand that contains all the Stones of the player.
+     * Class constructor.
      */
-    private List<Stone> stones;
-
-    /**
-     * Class constructor which specifies the player and stones.
-     *
-     * @param player The player.
-     */
-    public Hand(Player player) {
-        this.player = player;
-        this.stones = new ArrayList<>();
-
-        this.add(new Stone(this.player, Tile.QUEEN_BEE), 1);
-        this.add(new Stone(this.player, Tile.SPIDER), 2);
-        this.add(new Stone(this.player, Tile.BEETLE), 2);
-        this.add(new Stone(this.player, Tile.GRASSHOPPER), 3);
-        this.add(new Stone(this.player, Tile.SOLDIER_ANT), 3);
+    public Hand() {
+        stones = new HashMap<>();
     }
 
     /**
-     * Adds a specific stone a certain amount of times to the Hand.
-     *
-     * @param stone  The stone.
-     * @param amount number of times the stone has to be added
+     * Adds a stone to the hand.
+     * 
+     * @param stone The stone to add.
      */
-    public void add(Stone stone, int amount) {
-        for (int i = 0; i < amount; i++) {
-            stones.add(stone);
+    public void add(Stone stone) {
+        add(stone, 1);
+    }
+
+    /**
+     * Adds a stone (amount) number of times.
+     * 
+     * @param stone  The stone to add.
+     * @param amount The number of times the stone should be added.
+     */
+    public void add(Stone stone, Integer amount) {
+
+        Integer numberOf = stones.putIfAbsent(stone, amount);
+
+        if (numberOf != null) {
+            // The stone was already present, increment with 1.
+            stones.put(stone, numberOf + amount);
         }
     }
 
     /**
-     * Removes a specific stone from the Hand.
-     *
-     * @param stone The stone.
+     * Removes a stone from the hand. Returns true when successfull.
+     * 
+     * @param stone The stone to remove.
+     * @return Whether the stone was present.
      */
-    public void remove(Stone stone) {
-        stones.remove(stone);
-    }
+    public boolean remove(Stone stone) {
 
-    /**
-     * Removes all stones from the Hand.
-     */
-    public void clear() {
-        stones.clear();
-    }
+        Integer numberOf = stones.get(stone);
 
-    /**
-     * Returns list with only tile names from the stones that Hand has
-     *
-     * @return tileNames List of tile names
-     */
-    public List<Tile> getTileNames() {
-        List<Tile> tileNames = new ArrayList<>();
-        for (Stone tile : stones) {
-            tileNames.add(tile.getTile());
-        }
-        return tileNames;
-    }
+        if (numberOf != null && numberOf > 0) {
+            // Decrease the numbers of stones with 1.
+            stones.put(stone, numberOf - 1);
 
-    /**
-     * Whether the has the provided tile.
-     *
-     * @param tile The tile to check for.
-     * @return boolean
-     */
-    public boolean hasTile(Tile tile) {
-        return this.stones.contains(new Stone(player, tile));
-    }
-
-    /**
-     * Get the list of stones
-     *
-     * @return stones The list of stones
-     */
-    public List<Stone> getStones() {
-        return stones;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
             return true;
         }
 
-        if (obj == null || this.getClass() != obj.getClass()) {
-            return false;
-        }
-
-        Hand hand = (Hand) obj;
-
-        return this.player == hand.player && this.stones.equals(hand.stones);
+        return false;
     }
 }

@@ -1,70 +1,189 @@
 package nl.hanze.hive;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import nl.hanze.hive.Hive.Player;
+
 public class Board {
-    /**
-     * The positions on the board.
-     */
-    private Map<Position, List<Stone>> positions;
+	/**
+	 * The positions and the stones on that position.
+	 */
+	private Map<Position, ArrayList<Stone>> positions;
 
-    /**
-     * Class constructor which initialises with an empty board.
-     */
-    public Board() {
-        this.positions = new HashMap<>();
-    }
+	/**
+	 * Class constructor.
+	 */
+	public Board() {
+		positions = new HashMap<>();
+	}
 
-    /**
-     * Class constructor which initialises with a predefined board.
-     *
-     * @param positions The positions to use.
-     */
-    public Board(Map<Position, List<Stone>> positions) {
-        this.positions = positions;
-    }
+	/**
+	 * Add a stone to this board.
+	 * 
+	 * @param position The position to place the stone.
+	 * @param stone    The stone to add.
+	 */
+	public void add(Position position, Stone stone) {
+		// Create a list around the stone to add.
+		ArrayList<Stone> newStones = new ArrayList<>(Arrays.asList(stone));
 
-    /**
-     * Return the positions.
-     *
-     * @return <Map<Position, List<Stone>>
-     */
-    public Map<Position, List<Stone>> getPositions() {
-        return positions;
-    }
+		// Attempt to add the stones to the position.
+		ArrayList<Stone> existingStones = positions.putIfAbsent(position, newStones);
 
-    /**
-     * Checks whether the provided position is empty.
-     *
-     * @param position The position to check.
-     * @return boolean
-     */
-    public boolean isEmpty(Position position) {
-        // Return true when the position has not been registered yet.
-        if (!positions.containsKey(position)) {
-            return true;
-        }
+		if (existingStones != null) {
+			// The provided position already has one or more stones.
+			existingStones.addAll(newStones);
+			positions.put(position, existingStones);
+		}
+	}
 
-        return positions.get(position).isEmpty();
-    }
+	/**
+	 * Remove the top stone from the provided position.
+	 * 
+	 * @param position The position to remove the stone from.
+	 * @return The stone or null if not found.
+	 */
+	public Stone remove(Position position) {
+		// Retrieve the stones from the position.
+		ArrayList<Stone> existingStones = positions.get(position);
 
-    /**
-     * Returns the position of the provided stone or null if not found.
-     *
-     * @param stone The stone to locate.
-     * @return Position
-     */
-    public Position getPosition(Stone stone) {
-        // Check every position on the known board for the stone.
-        for (Map.Entry<Position, List<Stone>> entry : positions.entrySet()) {
-            // Return the position if it contains the stone.
-            if (entry.getValue().contains(stone)) {
-                return entry.getKey();
-            }
-        }
+		if (existingStones != null && existingStones.size() > 0) {
+			// Remove the top stone.
+			Stone s1 = existingStones.remove(existingStones.size() - 1);
 
-        return null;
-    }
+			if (existingStones.isEmpty()) {
+				// Remove the entry when no more stones are left.
+				positions.remove(position);
+			}
+
+			return s1;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Locate the position of the stone.
+	 * 
+	 * @param stone The stone to locate.
+	 * @return The position or null if not found.
+	 */
+	public Position getPosition(Stone stone) {
+		// Walk through every occupied position on the board.
+		for (Map.Entry<Position, ArrayList<Stone>> position : positions.entrySet()) {
+
+			if (position.getValue().contains(stone)) {
+				// The position contains the stone.
+				return position.getKey();
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the top stone on the provided position.
+	 * 
+	 * @param position The position to check.
+	 * @return The stone or null if not found.
+	 */
+	public Stone getStone(Position position) {
+		// Retrieve the stones from the position.
+		ArrayList<Stone> existingStones = positions.get(position);
+
+		if (existingStones != null && existingStones.size() > 0) {
+			// Return only the top stone.
+			return existingStones.get(existingStones.size() - 1);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Whether the board is empty.
+	 */
+	public boolean isPure() {
+
+		return positions.isEmpty();
+	}
+
+	/**
+	 * Counts the number of stones on the board for a player.
+	 * 
+	 * @param player The player to count the stones for.
+	 * @return The number of stones.
+	 */
+	public Integer getNumberOfStones(Player player) {
+		// The count.
+		int numberOf = 0;
+
+		// Walk through all the positions on the board.
+		for (ArrayList<Stone> stones : positions.values()) {
+			// Walk through all the stones on the position.
+			for (Stone stone : stones) {
+
+				if (stone.belongsTo(player)) {
+					numberOf += 1;
+				}
+			}
+		}
+
+		return numberOf;
+	}
+
+	/**
+	 * Whether the hive is currently connected.
+	 * 
+	 * @return Whether the hive is connected.
+	 */
+	public boolean isConnected() {
+		// Check whether the board has any stones.
+		if (positions.isEmpty()) {
+			return true;
+		}
+
+		// Retrieve the starting position.
+		Position initial = positions.keySet().iterator().next();
+
+		ArrayList<Position> todo = new ArrayList<>(Arrays.asList(initial));
+		ArrayList<Position> visited = new ArrayList<>(Arrays.asList(initial));
+
+		while (!todo.isEmpty()) {
+			// Retrieve the position.
+			Position position = todo.remove(0);
+
+			// Walk through its neighbours.
+			for (Position p : position.getNeighbours()) {
+
+				if (getStone(p) != null && !visited.contains(p)) {
+					// There is a stone and its position has not yet been visited.
+					todo.add(p);
+					visited.add(p);
+				}
+			}
+		}
+
+		return visited.containsAll(positions.keySet());
+	}
+
+	/**
+	 * Returns the number of stones on the provided position.
+	 * 
+	 * @param position The position to count the stones.
+	 * @return The number of stones.
+	 */
+	public int getNumberOfStones(Position position) {
+		// Retrieve the stones from the position.
+		ArrayList<Stone> existingStones = positions.get(position);
+
+		if (existingStones == null) {
+			// There are no stones at the location.
+			return 0;
+		}
+
+		return existingStones.size();
+	}
 }

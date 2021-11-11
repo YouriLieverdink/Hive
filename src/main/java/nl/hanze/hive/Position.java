@@ -1,6 +1,7 @@
 package nl.hanze.hive;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Position {
@@ -15,8 +16,8 @@ public class Position {
 	private int r;
 
 	/**
-	 * Class constructor which specifies the q and r coordinate.
-	 *
+	 * Class constructor which specifies the coordinates.
+	 * 
 	 * @param q The q coordinate.
 	 * @param r The r coordinate.
 	 */
@@ -26,34 +27,29 @@ public class Position {
 	}
 
 	/**
-	 * The neighbouring positions for this.
+	 * The neighbouring positions of this.
 	 *
-	 * @return List<Position>
+	 * @return A list of neighbouring positions.
 	 */
-	public List<Position> getNeighbours() {
-		return List.of(
-				new Position(q + 1, r - 1),
-				new Position(q + 1, r),
-				new Position(q, r  + 1),
-				new Position(q - 1, r + 1),
-				new Position(q - 1, r),
-				new Position(q, r - 1)
-		);
+	public ArrayList<Position> getNeighbours() {
+		return new ArrayList<>(Arrays.asList(new Position(q + 1, r - 1), new Position(q + 1, r), new Position(q, r + 1),
+				new Position(q - 1, r + 1), new Position(q - 1, r), new Position(q, r - 1)));
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+
+		if (this == object) {
 			return true;
 		}
 
-		if (obj == null || this.getClass() != obj.getClass()) {
+		if (object == null || getClass() != object.getClass()) {
 			return false;
 		}
 
-		Position position = (Position) obj;
+		Position s1 = (Position) object;
 
-		return this.q == position.q && this.r == position.r;
+		return s1.q == q && s1.r == r;
 	}
 
 	@Override
