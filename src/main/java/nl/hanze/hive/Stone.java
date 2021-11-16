@@ -1,5 +1,6 @@
 package nl.hanze.hive;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -90,6 +91,36 @@ public class Stone {
 		// Allowed to stack on top of others.
 		stack,
 	}
+
+	/**
+	 * Return whether the stone is able to move or not.
+	 *
+	 * @param board The board.
+	 * @return boolean Is blocked or not
+	 */
+	public Boolean canMove(Board board) {
+		Position position = board.getPosition(this);
+		Stone topStone = board.getStone(position);
+
+		if (topStone.equals(this)) {
+			board.remove(position);
+			if (board.isConnected()) {
+				board.add(position, this);
+				return true;
+			}
+			board.add(position, this);
+		}
+
+		return false;
+	}
+
+	public List<Position> getPossibleMoves(Board board) {
+		List<Position> moves = new ArrayList<>();
+		moves.add(new Position(0, 0));
+
+		return moves;
+	}
+
 
 	@Override
 	public boolean equals(Object object) {
