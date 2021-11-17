@@ -1,10 +1,14 @@
 package nl.hanze.hive;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
+
+import static nl.hanze.hive.Rules.isAllowedToMove;
 
 public class Stone {
 	/**
@@ -16,6 +20,11 @@ public class Stone {
 	 * The stone's face.
 	 */
 	private Tile tile;
+
+	/**
+	 * The stones available moves.
+	 */
+	private ArrayList<Position> availableMoves;
 
 	/**
 	 * Class constructor which specifies the player.
@@ -76,10 +85,20 @@ public class Stone {
 	}
 
 	/**
+	 * Whether this stone has a trait.
+	 * 
+	 * @param trait The trait to check.
+	 * @return If the traits is present.
+	 */
+	public boolean hasTrait(Trait trait) {
+		return this.getTraits().contains(trait);
+	}
+
+	/**
 	 * Types of traits.
 	 */
 	enum Trait {
-		// Allowed to move idenfinitly.
+		// Allowed to move indefinitely .
 		move,
 		// Allowed to move one times.
 		moveOne,

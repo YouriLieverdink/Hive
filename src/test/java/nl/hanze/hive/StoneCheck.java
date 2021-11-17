@@ -1,9 +1,5 @@
 package nl.hanze.hive;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -11,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 import nl.hanze.hive.Stone.Trait;
+
+import static nl.hanze.hive.Rules.isAllowedToMove;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StoneCheck {
 	@Test
@@ -66,4 +65,5 @@ public class StoneCheck {
 
 		assertEquals(traits, s1.getTraits());
 	}
+
 }

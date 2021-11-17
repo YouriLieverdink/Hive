@@ -36,6 +36,26 @@ public class Position {
 				new Position(q - 1, r + 1), new Position(q - 1, r), new Position(q, r - 1)));
 	}
 
+	/**
+	 * Returns the first neighbour in the provided direction.
+	 * 
+	 * @param direction The direction, range from 0 to 5.
+	 * @return The neighbouring position.
+	 */
+	public Position getNeighbour(int direction) {
+		Position d = new Position(0, 0).getNeighbours().get(direction);
+
+		return new Position(q + d.q, r + d.q);
+	};
+
+	public int getQ() {
+		return q;
+	}
+
+	public int getR() {
+		return r;
+	}
+
 	@Override
 	public boolean equals(Object object) {
 
