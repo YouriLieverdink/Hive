@@ -94,10 +94,10 @@ public class Rules {
 			return false;
 		}
 
-		int n1 = board.getNumberOfStones(common.get(0));
-		int n2 = board.getNumberOfStones(common.get(1));
-		int a = board.getNumberOfStones(from);
-		int b = board.getNumberOfStones(to);
+		int n1 = board.getNumberOfStonesOnPosition(common.get(0));
+		int n2 = board.getNumberOfStonesOnPosition(common.get(1));
+		int a = board.getNumberOfStonesOnPosition(from);
+		int b = board.getNumberOfStonesOnPosition(to);
 
 		if (Math.min(n1, n2) > Math.max(a - 1, b)) {
 			// 6b. The stone must be slid between the positions.

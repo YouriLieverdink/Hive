@@ -66,12 +66,12 @@ public class Board {
 	}
 
 	/**
-	 * Locate the position of the stone.
+	 * Locate the position of the QueenBee.
 	 * 
-	 * @param stone The stone to locate.
+	 * @param stone The QueenBee to locate.
 	 * @return The position or null if not found.
 	 */
-	public Position getPosition(Stone stone) {
+	public Position getQueenBee(Stone stone) {
 		// Walk through every occupied position on the board.
 		for (Map.Entry<Position, ArrayList<Stone>> position : positions.entrySet()) {
 
@@ -175,7 +175,7 @@ public class Board {
 	 * @param position The position to count the stones.
 	 * @return The number of stones.
 	 */
-	public int getNumberOfStones(Position position) {
+	public int getNumberOfStonesOnPosition(Position position) {
 		// Retrieve the stones from the position.
 		ArrayList<Stone> existingStones = positions.get(position);
 

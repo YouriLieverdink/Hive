@@ -1,14 +1,11 @@
 package nl.hanze.hive;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
-
-import static nl.hanze.hive.Rules.isAllowedToMove;
 
 public class Stone {
 	/**

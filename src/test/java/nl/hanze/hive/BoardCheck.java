@@ -108,6 +108,6 @@ public class BoardCheck {
 		b1.add(p1, new Stone(Player.WHITE));
 		b1.add(p1, new Stone(Player.WHITE));
 
-		assertEquals(2, b1.getNumberOfStones(p1));
+		assertEquals(2, b1.getNumberOfStonesOnPosition(p1));
 	}
 }
