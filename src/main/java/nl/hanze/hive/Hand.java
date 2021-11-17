@@ -62,11 +62,19 @@ public class Hand {
     }
 
     /**
-     * Returns true when hand is empty.
+     * Check whether a hand is empty.
      *
-     * @return Whether the hand is empty .
+     * @return Whether the hand is empty.
      */
     public boolean isEmpty() {
-        return stones.isEmpty();
+        // Loop through all stones.
+        for (int numberOf : stones.values()) {
+            // Check if there are more than one.
+            if (numberOf > 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

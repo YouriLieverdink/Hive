@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import nl.hanze.hive.Hive.Player;
+import nl.hanze.hive.Hive.Tile;
+
 public class RulesCheck {
 
 	@Test
@@ -102,13 +105,23 @@ public class RulesCheck {
 	}
 
 	@Test
-	void checkIfPlayerCanDoAnyMovesWhenNoMovesThenFalse() {
-		Board board = new Board();
-		board.add(new Position(0, -1), new Stone(Hive.Player.WHITE, Hive.Tile.QUEEN_BEE));
-		board.add(new Position(0, 0), new Stone(Hive.Player.BLACK, Hive.Tile.QUEEN_BEE));
-		board.add(new Position(0, 1), new Stone(Hive.Player.WHITE, Hive.Tile.SOLDIER_ANT));
+	// Requirement 6b.
+	void givenPlayerWhenPossibleMovesThenTrue() {
+		Board b1 = new Board();
+		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
 
-		assertFalse(Rules.hasPossibleMoves(board, Hive.Player.BLACK));
+		assertTrue(Rules.hasPossibleMove(b1, Player.WHITE));
 	}
 
+	@Test
+	// Requirement 6b.
+	void givenPlayerWhenNoPossibleMovesThenFalse() {
+		Board b1 = new Board();
+		b1.add(new Position(0, -1), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 0), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 1), new Stone(Player.WHITE, Tile.SOLDIER_ANT));
+
+		assertFalse(Rules.hasPossibleMove(b1, Player.BLACK));
+	}
 }

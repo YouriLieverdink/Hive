@@ -73,15 +73,20 @@ public class ControllerCheck {
 	// Requirement 3b.
 	void whenPassCompletedThenNextPlayer() {
 		Board b1 = new Board();
-		Controller c1 = new Controller(b1);
+		Hand h1 = new Hand();
+		Controller c1 = new Controller(b1, h1);
 		Stone s1 = new Stone(Player.BLACK, Tile.QUEEN_BEE);
 
 		try {
 
 			c1.pass();
+
+			h1.add(s1);
+
 			c1.play(Tile.QUEEN_BEE, 0, 0);
 		} //
 		catch (Exception e) {
+			System.out.println(e);
 		}
 
 		assertEquals(s1, b1.getStone(new Position(0, 0)));
@@ -305,14 +310,25 @@ public class ControllerCheck {
 	}
 
 	@Test
-		// Requirement 11.
-	void passIfNoStonesInHandAndNoPossibleMoves() {
-		Board board = new Board();
-		board.add(new Position(0, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
-		board.add(new Position(-1, 0), new Stone(Player.BLACK, Tile.QUEEN_BEE));
-		board.add(new Position(1, 0), new Stone(Player.WHITE, Tile.SOLDIER_ANT));
-		Controller controller = new Controller();
+	// Requirement 11.
+	void whenNoPossibleMovesThenNothing() {
+		Board b1 = new Board();
+		b1.add(new Position(0, -1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 1), new Stone(Player.BLACK, Tile.SOLDIER_ANT));
+		Controller c1 = new Controller(b1, new Hand());
 
-		assertThrows(Hive.IllegalMove.class, controller::pass);
+		assertDoesNotThrow(() -> c1.pass());
+	}
+
+	@Test
+	// Requirement 11.
+	void whenPossibleMovesThenIllegalMove() {
+		Board b1 = new Board();
+		b1.add(new Position(0, 0), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(-1, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		Controller c1 = new Controller(b1, new Hand());
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.pass());
 	}
 }

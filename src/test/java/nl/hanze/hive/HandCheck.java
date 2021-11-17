@@ -50,4 +50,14 @@ public class HandCheck {
 
 		assertTrue(h1.remove(new Stone(Player.WHITE, Tile.QUEEN_BEE)));
 	}
+
+	@Test
+	void whenEmptyThenTrue() {
+		Hand h1 = new Hand();
+		Stone s1 = new Stone(Player.WHITE);
+		h1.add(s1);
+		h1.remove(s1);
+
+		assertTrue(h1.isEmpty());
+	}
 }

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
@@ -191,24 +190,11 @@ public class Board {
 	}
 
 	/**
-	 * Returns the players' stones that are placed on the board.
-	 *
-	 * @param player The player .
-	 * @return The number of stones.
+	 * Returns a list of all occupied positions.
+	 * 
+	 * @return A list of positions.
 	 */
-	public Map<Position, ArrayList<Stone>> getStonesFromPlayer(Player player) {
-		Map<Position, ArrayList<Stone>> stonesOfPlayer = new HashMap<>();
-
-		for (Map.Entry<Position, ArrayList<Stone>> location : positions.entrySet()) {
-			ArrayList<Stone> stones = location.getValue();
-			for (Stone stone : stones) {
-
-				if (stone.belongsTo(player)) {
-					stonesOfPlayer.put(location.getKey(), location.getValue());
-				}
-			}
-		}
-
-		return stonesOfPlayer;
+	public List<Position> getOccupiedPositions() {
+		return new ArrayList<>(positions.keySet());
 	}
 }

@@ -2,6 +2,7 @@ package nl.hanze.hive;
 
 import java.util.*;
 
+import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Stone.Trait;
 
 public class Rules {
@@ -59,6 +60,13 @@ public class Rules {
 
 		// Temporarely remove the stone from the board.
 		board.remove(position);
+
+		// Check if the board is still connected.
+		if (!board.isConnected()) {
+			board.add(position, stone);
+
+			return List.of();
+		}
 
 		// Determine the possible moves.
 		ArrayList<Position> availableMoves = new ArrayList<>();
@@ -206,29 +214,33 @@ public class Rules {
 		return hop(board, next, direction);
 	}
 
-	public static boolean hasPossibleMoves(Board board, Hive.Player player) {
-		Map<Position, ArrayList<Stone>> stonesOfPlayer = board.getStonesFromPlayer(player);
+	/**
+	 * Whether the player has a possible move.
+	 * 
+	 * @param board  The current board.
+	 * @param player The player to check for.
+	 * @return Whether the player has a possible move.
+	 */
+	public static boolean hasPossibleMove(Board board, Player player) {
+		// Retrieve the occupied positions.
+		List<Position> positions = board.getOccupiedPositions();
 
-		for (Map.Entry<Position, ArrayList<Stone>> location : stonesOfPlayer.entrySet()) {
-			ArrayList<Stone> stones = location.getValue();
-			Position position = location.getKey();
+		// Walk through all of them.
+		for (Position p : positions) {
+			// Retrieve the stone.
+			Stone s1 = board.getStone(p);
 
-			for (Stone stone : stones) {
-				if (board.getStone(position).equals(stone)) { //check if stone on top
-					if (stone.belongsTo(player)) { //check if stone really belongs to player
-						board.remove(position);
-						if (board.isConnected()) {
-							if (!getPossibleMoves(board, position).isEmpty()){
-								return true;
-							}
-							board.add(position, stone);
-						}
-					}
-				}
+			// Continue if the stone belongs to the opponent.
+			if (!s1.belongsTo(player)) {
+				continue;
+			}
+
+			// Check if there are any possible moves.
+			if (getPossibleMoves(board, p).size() > 0) {
+				return true;
 			}
 		}
 
 		return false;
 	}
-
 }

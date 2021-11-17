@@ -56,6 +56,23 @@ public class Controller implements Hive {
 		this.board = board;
 	}
 
+	/**
+	 * Class constructor which specifies the board and the hand to use.
+	 * 
+	 * @param board The board to use.
+	 * @param hand  The starting hand to use for each player.
+	 */
+	public Controller(Board board, Hand hand) {
+		this();
+
+		this.board = board;
+
+		for (Player player : Player.values()) {
+			// Set the hand.
+			players.put(player, hand);
+		}
+	}
+
 	@Override
 	public void play(Tile tile, int q, int r) throws IllegalMove {
 		// Create the stone and position.
@@ -171,9 +188,16 @@ public class Controller implements Hive {
 
 	@Override
 	public void pass() throws IllegalMove {
-		// check if player has no stones in hand
-		if (players.get(turn).isEmpty()) {
-			throw new IllegalMove("You have still have stones in your hand");
+		// Check if the player has any possible moves.
+		if (Rules.hasPossibleMove(board, turn)) {
+			// Requirement 12.
+			throw new IllegalMove("There is still a possible move.");
+		}
+
+		// Check if the player has stones in their hand.
+		if (!players.get(turn).isEmpty()) {
+			// Requirement 12.
+			throw new IllegalMove("There is a stone left in your hand.");
 		}
 
 		turn = opponent(turn);
