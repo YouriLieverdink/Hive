@@ -1,9 +1,8 @@
 package nl.hanze.hive;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
+import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Stone.Trait;
 
 public class Rules {
@@ -62,6 +61,13 @@ public class Rules {
 		// Temporarely remove the stone from the board.
 		board.remove(position);
 
+		// Check if the board is still connected.
+		if (!board.isConnected()) {
+			board.add(position, stone);
+
+			return List.of();
+		}
+
 		// Determine the possible moves.
 		ArrayList<Position> availableMoves = new ArrayList<>();
 		dfs(board, position, stone, new HashSet<Position>(), depth - 1, availableMoves);
@@ -94,10 +100,10 @@ public class Rules {
 			return false;
 		}
 
-		int n1 = board.getNumberOfStones(common.get(0));
-		int n2 = board.getNumberOfStones(common.get(1));
-		int a = board.getNumberOfStones(from);
-		int b = board.getNumberOfStones(to);
+		int n1 = board.getNumberOfStonesOnPosition(common.get(0));
+		int n2 = board.getNumberOfStonesOnPosition(common.get(1));
+		int a = board.getNumberOfStonesOnPosition(from);
+		int b = board.getNumberOfStonesOnPosition(to);
 
 		if (Math.min(n1, n2) > Math.max(a - 1, b)) {
 			// 6b. The stone must be slid between the positions.
@@ -208,4 +214,33 @@ public class Rules {
 		return hop(board, next, direction);
 	}
 
+	/**
+	 * Whether the player has a possible move.
+	 * 
+	 * @param board  The current board.
+	 * @param player The player to check for.
+	 * @return Whether the player has a possible move.
+	 */
+	public static boolean hasPossibleMove(Board board, Player player) {
+		// Retrieve the occupied positions.
+		List<Position> positions = board.getOccupiedPositions();
+
+		// Walk through all of them.
+		for (Position p : positions) {
+			// Retrieve the stone.
+			Stone s1 = board.getStone(p);
+
+			// Continue if the stone belongs to the opponent.
+			if (!s1.belongsTo(player)) {
+				continue;
+			}
+
+			// Check if there are any possible moves.
+			if (getPossibleMoves(board, p).size() > 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

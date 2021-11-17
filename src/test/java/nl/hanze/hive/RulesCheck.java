@@ -1,10 +1,14 @@
 package nl.hanze.hive;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+
+import nl.hanze.hive.Hive.Player;
+import nl.hanze.hive.Hive.Tile;
 
 public class RulesCheck {
 
@@ -100,4 +104,24 @@ public class RulesCheck {
 				new Position(2, 0), new Position(3, -1), new Position(4, -2))));
 	}
 
+	@Test
+	// Requirement 6b.
+	void givenPlayerWhenPossibleMovesThenTrue() {
+		Board b1 = new Board();
+		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+
+		assertTrue(Rules.hasPossibleMove(b1, Player.WHITE));
+	}
+
+	@Test
+	// Requirement 6b.
+	void givenPlayerWhenNoPossibleMovesThenFalse() {
+		Board b1 = new Board();
+		b1.add(new Position(0, -1), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 0), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 1), new Stone(Player.WHITE, Tile.SOLDIER_ANT));
+
+		assertFalse(Rules.hasPossibleMove(b1, Player.BLACK));
+	}
 }

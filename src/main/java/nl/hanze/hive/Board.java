@@ -3,9 +3,11 @@ package nl.hanze.hive;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import nl.hanze.hive.Hive.Player;
+import nl.hanze.hive.Hive.Tile;
 
 public class Board {
 	/**
@@ -66,16 +68,16 @@ public class Board {
 	}
 
 	/**
-	 * Locate the position of the stone.
+	 * Locate the position of a queen bee.
 	 * 
-	 * @param stone The stone to locate.
+	 * @param player The player whose queen bee to locate.
 	 * @return The position or null if not found.
 	 */
-	public Position getPosition(Stone stone) {
+	public Position getPositionOfQueenBee(Player player) {
 		// Walk through every occupied position on the board.
 		for (Map.Entry<Position, ArrayList<Stone>> position : positions.entrySet()) {
 
-			if (position.getValue().contains(stone)) {
+			if (position.getValue().contains(new Stone(player, Tile.QUEEN_BEE))) {
 				// The position contains the stone.
 				return position.getKey();
 			}
@@ -175,7 +177,7 @@ public class Board {
 	 * @param position The position to count the stones.
 	 * @return The number of stones.
 	 */
-	public int getNumberOfStones(Position position) {
+	public int getNumberOfStonesOnPosition(Position position) {
 		// Retrieve the stones from the position.
 		ArrayList<Stone> existingStones = positions.get(position);
 
@@ -185,5 +187,14 @@ public class Board {
 		}
 
 		return existingStones.size();
+	}
+
+	/**
+	 * Returns a list of all occupied positions.
+	 * 
+	 * @return A list of positions.
+	 */
+	public List<Position> getOccupiedPositions() {
+		return new ArrayList<>(positions.keySet());
 	}
 }

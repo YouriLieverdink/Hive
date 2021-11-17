@@ -56,6 +56,23 @@ public class Controller implements Hive {
 		this.board = board;
 	}
 
+	/**
+	 * Class constructor which specifies the board and the hand to use.
+	 * 
+	 * @param board The board to use.
+	 * @param hand  The starting hand to use for each player.
+	 */
+	public Controller(Board board, Hand hand) {
+		this();
+
+		this.board = board;
+
+		for (Player player : Player.values()) {
+			// Set the hand.
+			players.put(player, hand);
+		}
+	}
+
 	@Override
 	public void play(Tile tile, int q, int r) throws IllegalMove {
 		// Create the stone and position.
@@ -67,7 +84,7 @@ public class Controller implements Hive {
 			throw new IllegalMove("The provided position is not empty.");
 		}
 
-		if (board.getNumberOfStones(turn) == 3 && board.getPosition(new Stone(turn, Tile.QUEEN_BEE)) == null) {
+		if (board.getNumberOfStones(turn) == 3 && board.getPositionOfQueenBee(turn) == null) {
 			// 4e. The queen bee must be added within the first four moves.
 			throw new IllegalMove("Fourth move, add the queen bee.");
 		}
@@ -131,7 +148,7 @@ public class Controller implements Hive {
 			throw new IllegalMove("The stone does not belong to you.");
 		}
 
-		if (board.getPosition(new Stone(turn, Tile.QUEEN_BEE)) == null) {
+		if (board.getPositionOfQueenBee(turn) == null) {
 			// 5b. The queen must be added in order to move tiles.
 			throw new IllegalMove("The queen bee must be added before moving tiles.");
 		}
@@ -171,14 +188,25 @@ public class Controller implements Hive {
 
 	@Override
 	public void pass() throws IllegalMove {
+		// Check if the player has any possible moves.
+		if (Rules.hasPossibleMove(board, turn)) {
+			// Requirement 12.
+			throw new IllegalMove("There is still a possible move.");
+		}
+
+		// Check if the player has stones in their hand.
+		if (!players.get(turn).isEmpty()) {
+			// Requirement 12.
+			throw new IllegalMove("There is a stone left in your hand.");
+		}
+
 		turn = opponent(turn);
 	}
 
 	@Override
 	public boolean isWinner(Player player) {
 		// Retrieve the position of the opponent's queen bee.
-		Stone stone = new Stone(opponent(player), Tile.QUEEN_BEE);
-		Position position = board.getPosition(stone);
+		Position position = board.getPositionOfQueenBee(opponent(player));
 
 		if (position == null) {
 			// The player has not played their queen bee yet.

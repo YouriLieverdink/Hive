@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
+import java.util.List;
+
 public class BoardCheck {
 	@Test
 	// Requirement 2a.
@@ -102,12 +104,23 @@ public class BoardCheck {
 
 	@Test
 	// Requirement 6b.
+	void whenPositionsAreEqualThenTrue() {
+		Board b1 = new Board();
+		b1.add(new Position(0, 0), new Stone(Player.WHITE));
+		b1.add(new Position(0, 0), new Stone(Player.WHITE));
+		b1.add(new Position(0, 1), new Stone(Player.WHITE));
+
+		assertTrue(b1.getOccupiedPositions().containsAll(List.of(new Position(0, 0), new Position(0, 1))));
+	}
+
+	@Test
+	// Requirement 6b.
 	void givenPositionWhenNumberOfStonesEqualThenTrue() {
 		Board b1 = new Board();
 		Position p1 = new Position(0, 0);
 		b1.add(p1, new Stone(Player.WHITE));
 		b1.add(p1, new Stone(Player.WHITE));
 
-		assertEquals(2, b1.getNumberOfStones(p1));
+		assertEquals(2, b1.getNumberOfStonesOnPosition(p1));
 	}
 }
