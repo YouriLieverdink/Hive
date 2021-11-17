@@ -85,6 +85,16 @@ public class Stone {
 	}
 
 	/**
+	 * Whether this stone has a trait.
+	 * 
+	 * @param trait The trait to check.
+	 * @return If the traits is present.
+	 */
+	public boolean hasTrait(Trait trait) {
+		return this.getTraits().contains(trait);
+	}
+
+	/**
 	 * Types of traits.
 	 */
 	enum Trait {
@@ -98,100 +108,6 @@ public class Stone {
 		jump,
 		// Allowed to stack on top of others.
 		stack,
-	}
-
-	/**
-	 * Find all possible moves using dfs
-	 *
-	 * @param board The board.
-	 * @param position The position of the tile.
-	 * @return List<Position> list of positions where the stone can be moved to
-	 */
-	public List<Position> getPossibleMoves (Board board, Position position) {
-		availableMoves = new ArrayList<>();
-		int distanceLimit = 0;
-		boolean stack = getTraits().contains(Trait.stack);
-		boolean indefinitely  = getTraits().contains(Trait.move);
-
-		if (getTraits().contains(Trait.moveOne)) {
-			distanceLimit = 1;
-		} else if (getTraits().contains(Trait.moveThree)) {
-			distanceLimit = 3;
-		}
-
-		if (getTraits().contains(Trait.jump)) {
-			return jump(board, position);
-		}
-
-		board.remove(position);
-		dfs(board, position, new HashSet<Position>(), 1, distanceLimit, stack, indefinitely);
-		board.add(position, this);
-		return new ArrayList<>(availableMoves);
-	}
-
-	/**
-	 * Find all possible moves using dfs
-	 *
-	 * @param board The board.
-	 * @param current The current position being tested.
-	 * @param visited All visited positions.
-	 * @param distance The current distance of the algorithm.
-	 * @param distanceLimit the distance limit of the stone.
-	 * @param stack if the stone is allowed to be stacked on other stones.
-	 */
-	public void dfs (Board board, Position current, HashSet<Position> visited, int distance, int distanceLimit, boolean stack, boolean indefinitely) {
-		visited.add(current);
-		for (Position neighbour : current.getNeighbours()) {
-			if (!visited.contains(neighbour) && isAllowedToMove(board, current, neighbour) && (stack || board.getStone(neighbour) == null)) {
-				if (distance >= distanceLimit) {
-					if (!indefinitely) {
-						availableMoves.add(neighbour);
-						continue;
-					}
-				}
-				dfs(board, neighbour, visited, distance + 1, distanceLimit, stack, indefinitely);
-				if (indefinitely) {
-					availableMoves.addAll(visited);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Test all possible directions for possible jumps
-	 *
-	 * @param board The board.
-	 * @param position TThe position of the tile.
-	 * @return ArrayList<Position> positions the jump can reach.
-	 */
-	private ArrayList<Position> jump (Board board, Position position) {
-		ArrayList<Position> moves = new ArrayList<>();
-		int[][] orientations = {{0, 1}, {0, -1}, {-1, 0}, {-1, 1}, {1, 0}, {1, -1}};
-		for (int[] orientation : orientations) {
-			Position nextPosition = new Position(position.getQ() + orientation[0], position.getR() + orientation[1]);
-			if(board.getStone(nextPosition) != null) {
-				moves.add(hop(board, position, orientation[0], orientation[1]));
-			}
-		}
-		return moves;
-	}
-
-	/**
-	 * Find all possible moves using hops
-	 *
-	 * @param board The board.
-	 * @param from The position where to hop from.
-	 * @param Q the Q coordinate.
-	 * @param R the R coordinate.
-	 * @return ArrayList<Position> positions the jump can reach.
-	 */
-	private Position hop(Board board, Position from, int Q, int R) {
-		Position next = new Position(from.getQ() + Q, from.getR() + R);
-		if (board.getStone(next) != null) {
-			return hop(board, next, Q, R);
-		} else {
-			return next;
-		}
 	}
 
 	@Override
