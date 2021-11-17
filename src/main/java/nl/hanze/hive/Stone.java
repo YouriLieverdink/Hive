@@ -1,11 +1,14 @@
 package nl.hanze.hive;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
+
+import static nl.hanze.hive.Rules.isAllowedToMove;
 
 public class Stone {
 	/**
@@ -17,6 +20,11 @@ public class Stone {
 	 * The stone's face.
 	 */
 	private Tile tile;
+
+	/**
+	 * The stones available moves.
+	 */
+	private ArrayList<Position> availableMoves;
 
 	/**
 	 * Class constructor which specifies the player.
@@ -80,7 +88,7 @@ public class Stone {
 	 * Types of traits.
 	 */
 	enum Trait {
-		// Allowed to move idenfinitly.
+		// Allowed to move indefinitely .
 		move,
 		// Allowed to move one times.
 		moveOne,
@@ -93,34 +101,98 @@ public class Stone {
 	}
 
 	/**
-	 * Return whether the stone is able to move or not.
+	 * Find all possible moves using dfs
 	 *
 	 * @param board The board.
-	 * @return boolean Is blocked or not
+	 * @param position The position of the tile.
+	 * @return List<Position> list of positions where the stone can be moved to
 	 */
-	public Boolean canMove(Board board) {
-		Position position = board.getPosition(this);
-		Stone topStone = board.getStone(position);
+	public List<Position> getPossibleMoves (Board board, Position position) {
+		availableMoves = new ArrayList<>();
+		int distanceLimit = 0;
+		boolean stack = getTraits().contains(Trait.stack);
+		boolean indefinitely  = getTraits().contains(Trait.move);
 
-		if (topStone.equals(this)) {
-			board.remove(position);
-			if (board.isConnected()) {
-				board.add(position, this);
-				return true;
-			}
-			board.add(position, this);
+		if (getTraits().contains(Trait.moveOne)) {
+			distanceLimit = 1;
+		} else if (getTraits().contains(Trait.moveThree)) {
+			distanceLimit = 3;
 		}
 
-		return false;
+		if (getTraits().contains(Trait.jump)) {
+			return jump(board, position);
+		}
+
+		board.remove(position);
+		dfs(board, position, new HashSet<Position>(), 1, distanceLimit, stack, indefinitely);
+		board.add(position, this);
+		return new ArrayList<>(availableMoves);
 	}
 
-	public List<Position> getPossibleMoves(Board board) {
-		List<Position> moves = new ArrayList<>();
-		moves.add(new Position(0, 0));
+	/**
+	 * Find all possible moves using dfs
+	 *
+	 * @param board The board.
+	 * @param current The current position being tested.
+	 * @param visited All visited positions.
+	 * @param distance The current distance of the algorithm.
+	 * @param distanceLimit the distance limit of the stone.
+	 * @param stack if the stone is allowed to be stacked on other stones.
+	 */
+	public void dfs (Board board, Position current, HashSet<Position> visited, int distance, int distanceLimit, boolean stack, boolean indefinitely) {
+		visited.add(current);
+		for (Position neighbour : current.getNeighbours()) {
+			if (!visited.contains(neighbour) && isAllowedToMove(board, current, neighbour) && (stack || board.getStone(neighbour) == null)) {
+				if (distance >= distanceLimit) {
+					if (!indefinitely) {
+						availableMoves.add(neighbour);
+						continue;
+					}
+				}
+				dfs(board, neighbour, visited, distance + 1, distanceLimit, stack, indefinitely);
+				if (indefinitely) {
+					availableMoves.addAll(visited);
+				}
+			}
+		}
+	}
 
+	/**
+	 * Test all possible directions for possible jumps
+	 *
+	 * @param board The board.
+	 * @param position TThe position of the tile.
+	 * @return ArrayList<Position> positions the jump can reach.
+	 */
+	private ArrayList<Position> jump (Board board, Position position) {
+		ArrayList<Position> moves = new ArrayList<>();
+		int[][] orientations = {{0, 1}, {0, -1}, {-1, 0}, {-1, 1}, {1, 0}, {1, -1}};
+		for (int[] orientation : orientations) {
+			Position nextPosition = new Position(position.getQ() + orientation[0], position.getR() + orientation[1]);
+			if(board.getStone(nextPosition) != null) {
+				moves.add(hop(board, position, orientation[0], orientation[1]));
+			}
+		}
 		return moves;
 	}
 
+	/**
+	 * Find all possible moves using hops
+	 *
+	 * @param board The board.
+	 * @param from The position where to hop from.
+	 * @param Q the Q coordinate.
+	 * @param R the R coordinate.
+	 * @return ArrayList<Position> positions the jump can reach.
+	 */
+	private Position hop(Board board, Position from, int Q, int R) {
+		Position next = new Position(from.getQ() + Q, from.getR() + R);
+		if (board.getStone(next) != null) {
+			return hop(board, next, Q, R);
+		} else {
+			return next;
+		}
+	}
 
 	@Override
 	public boolean equals(Object object) {

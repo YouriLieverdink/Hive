@@ -36,6 +36,14 @@ public class Position {
 				new Position(q - 1, r + 1), new Position(q - 1, r), new Position(q, r - 1)));
 	}
 
+	public int getQ() {
+		return q;
+	}
+
+	public int getR() {
+		return r;
+	}
+
 	@Override
 	public boolean equals(Object object) {
 

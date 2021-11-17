@@ -48,7 +48,7 @@ public class Rules {
 			return false;
 		}
 
-		if (board.getStone(common.get(0)) == null && board.getStone(common.get(1)) == null) {
+		if (board.getStone(common.get(0)) == null && board.getStone(common.get(1)) == null && board.getStone(to) == null) {
 			// 6c. A stone must always be in contact with another stone.
 			return false;
 		}
