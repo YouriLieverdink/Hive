@@ -21,6 +21,58 @@ public class Rules {
 	}
 
 	/**
+	 * Find all possible moves using dfs
+	 *
+	 * @param board    The board.
+	 * @param position The position of the tile.
+	 * @return List<Position> list of positions where the stone can be moved to
+	 */
+	public static List<Position> getPossibleMoves(Board board, Position position) {
+		// Retrieve the stone from the board.
+		Stone stone = board.getStone(position);
+
+		if (stone == null) {
+			// Return an empty list when no stones have been found.
+			return List.of();
+		}
+
+		if (stone.hasTrait(Trait.jump)) {
+			// Return the possibel jump moves.
+			return getPossibleJumps(board, position);
+		}
+
+		// Determine the depth of the search.
+		int depth = 0;
+
+		if (stone.hasTrait(Trait.move)) {
+			depth = 99;
+		} //
+		else if (stone.hasTrait(Trait.moveOne)) {
+			depth = 1;
+		} //
+		else if (stone.hasTrait(Trait.moveThree)) {
+			depth = 3;
+		}
+
+		if (depth == 0) {
+			// The stone is not allowed to move.
+			return List.of();
+		}
+
+		// Temporarely remove the stone from the board.
+		board.remove(position);
+
+		// Determine the possible moves.
+		ArrayList<Position> availableMoves = new ArrayList<>();
+		dfs(board, position, stone, new HashSet<Position>(), depth - 1, availableMoves);
+
+		// Re-add the stone.
+		board.add(position, stone);
+
+		return availableMoves;
+	}
+
+	/**
 	 * Whether this slide is allowed.
 	 * 
 	 * @param board The current board.
@@ -62,58 +114,6 @@ public class Rules {
 	}
 
 	/**
-	 * Find all possible moves using dfs
-	 *
-	 * @param board    The board.
-	 * @param position The position of the tile.
-	 * @return List<Position> list of positions where the stone can be moved to
-	 */
-	public static List<Position> getPossibleMoves(Board board, Position position) {
-		// Retrieve the stone from the board.
-		Stone stone = board.getStone(position);
-
-		if (stone == null) {
-			// Return an empty list when no stones have been found.
-			return List.of();
-		}
-
-		if (stone.hasTrait(Trait.jump)) {
-			// Return the possibel jump moves.
-			return getPossibleJumps(board, position);
-		}
-
-		// Determine the depth of the search.
-		int depth = 0;
-
-		if (stone.hasTrait(Trait.move)) {
-			depth = 99;
-		} //
-		if (stone.hasTrait(Trait.moveOne)) {
-			depth = 1;
-		} //
-		else if (stone.hasTrait(Trait.moveThree)) {
-			depth = 3;
-		}
-
-		if (depth == 0) {
-			// The stone is not allowed to move.
-			return List.of();
-		}
-
-		// Temporarely remove the stone from the board.
-		board.remove(position);
-
-		// Determine the possible moves.
-		ArrayList<Position> availableMoves = new ArrayList<>();
-		dfs(board, position, stone, new HashSet<Position>(), depth - 1, availableMoves);
-
-		// Re-add the stone.
-		board.add(position, stone);
-
-		return availableMoves;
-	}
-
-	/**
 	 * Find all possible moves using dfs.
 	 * 
 	 * @param board          The current board.
@@ -123,7 +123,7 @@ public class Rules {
 	 * @param depth          The depth of the search.
 	 * @param availableMoves The list to store the available moves.
 	 */
-	public static void dfs(Board board, Position position, Stone stone, HashSet<Position> visited, int depth,
+	private static void dfs(Board board, Position position, Stone stone, HashSet<Position> visited, int depth,
 			ArrayList<Position> availableMoves) {
 		// Add the current position to the visited list.
 		visited.add(position);
