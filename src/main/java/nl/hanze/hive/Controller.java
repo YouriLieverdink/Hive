@@ -171,6 +171,11 @@ public class Controller implements Hive {
 
 	@Override
 	public void pass() throws IllegalMove {
+		// check if player has no stones in hand
+		if (players.get(turn).isEmpty()) {
+			throw new IllegalMove("You have still have stones in your hand");
+		}
+
 		turn = opponent(turn);
 	}
 

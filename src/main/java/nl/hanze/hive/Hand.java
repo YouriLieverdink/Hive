@@ -43,7 +43,7 @@ public class Hand {
 
     /**
      * Removes a stone from the hand. Returns true when successfull.
-     * 
+     *
      * @param stone The stone to remove.
      * @return Whether the stone was present.
      */
@@ -59,5 +59,14 @@ public class Hand {
         }
 
         return false;
+    }
+
+    /**
+     * Returns true when hand is empty.
+     *
+     * @return Whether the hand is empty .
+     */
+    public boolean isEmpty() {
+        return stones.isEmpty();
     }
 }

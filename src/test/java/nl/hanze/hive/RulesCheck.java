@@ -1,5 +1,6 @@
 package nl.hanze.hive;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -98,6 +99,16 @@ public class RulesCheck {
 				new Position(1, -3), new Position(0, -2), new Position(-1, -1), new Position(-1, 0),
 				new Position(-2, 1), new Position(-2, 2), new Position(-1, 2), new Position(0, 2), new Position(1, 1),
 				new Position(2, 0), new Position(3, -1), new Position(4, -2))));
+	}
+
+	@Test
+	void checkIfPlayerCanDoAnyMovesWhenNoMovesThenFalse() {
+		Board board = new Board();
+		board.add(new Position(0, -1), new Stone(Hive.Player.WHITE, Hive.Tile.QUEEN_BEE));
+		board.add(new Position(0, 0), new Stone(Hive.Player.BLACK, Hive.Tile.QUEEN_BEE));
+		board.add(new Position(0, 1), new Stone(Hive.Player.WHITE, Hive.Tile.SOLDIER_ANT));
+
+		assertFalse(Rules.hasPossibleMoves(board, Hive.Player.BLACK));
 	}
 
 }

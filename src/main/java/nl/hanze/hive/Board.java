@@ -186,4 +186,26 @@ public class Board {
 
 		return existingStones.size();
 	}
+
+	/**
+	 * Returns the players' stones that are placed on the board.
+	 *
+	 * @param player The player .
+	 * @return The number of stones.
+	 */
+	public Map<Position, ArrayList<Stone>> getStonesFromPlayer(Player player) {
+		Map<Position, ArrayList<Stone>> stonesOfPlayer = new HashMap<>();
+
+		for (Map.Entry<Position, ArrayList<Stone>> location : positions.entrySet()) {
+			ArrayList<Stone> stones = location.getValue();
+			for (Stone stone : stones) {
+
+				if (stone.belongsTo(player)) {
+					stonesOfPlayer.put(location.getKey(), location.getValue());
+				}
+			}
+		}
+
+		return stonesOfPlayer;
+	}
 }

@@ -303,4 +303,16 @@ public class ControllerCheck {
 
 		assertThrows(Hive.IllegalMove.class, () -> c1.move(-1, 1, 0, 1));
 	}
+
+	@Test
+		// Requirement 11.
+	void passIfNoStonesInHandAndNoPossibleMoves() {
+		Board board = new Board();
+		board.add(new Position(0, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		board.add(new Position(-1, 0), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		board.add(new Position(1, 0), new Stone(Player.WHITE, Tile.SOLDIER_ANT));
+		Controller controller = new Controller();
+
+		assertThrows(Hive.IllegalMove.class, controller::pass);
+	}
 }

@@ -1,8 +1,6 @@
 package nl.hanze.hive;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import nl.hanze.hive.Stone.Trait;
 
@@ -206,6 +204,31 @@ public class Rules {
 
 		// Continue the hop.
 		return hop(board, next, direction);
+	}
+
+	public static boolean hasPossibleMoves(Board board, Hive.Player player) {
+		Map<Position, ArrayList<Stone>> stonesOfPlayer = board.getStonesFromPlayer(player);
+
+		for (Map.Entry<Position, ArrayList<Stone>> location : stonesOfPlayer.entrySet()) {
+			ArrayList<Stone> stones = location.getValue();
+			Position position = location.getKey();
+
+			for (Stone stone : stones) {
+				if (board.getStone(position).equals(stone)) { //check if stone on top
+					if (stone.belongsTo(player)) { //check if stone really belongs to player
+						board.remove(position);
+						if (board.isConnected()) {
+							if (!getPossibleMoves(board, position).isEmpty()){
+								return true;
+							}
+							board.add(position, stone);
+						}
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 }
