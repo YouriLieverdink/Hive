@@ -1,6 +1,5 @@
 package nl.hanze.hive;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,11 +16,6 @@ public class Stone {
 	 * The stone's face.
 	 */
 	private Tile tile;
-
-	/**
-	 * The stones available moves.
-	 */
-	private ArrayList<Position> availableMoves;
 
 	/**
 	 * Class constructor which specifies the player.

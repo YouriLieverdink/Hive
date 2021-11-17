@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Test;
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class BoardCheck {
 	@Test
@@ -125,22 +123,4 @@ public class BoardCheck {
 
 		assertEquals(2, b1.getNumberOfStonesOnPosition(p1));
 	}
-
-	// @Test
-	// // Requirement 6b.
-	// void getAllStonesOfPlayerWhenSameThenTrue() {
-	// Board board = new Board();
-	// Stone one = new Stone(Hive.Player.WHITE, Hive.Tile.QUEEN_BEE);
-	// Stone two = new Stone(Hive.Player.WHITE, Tile.SOLDIER_ANT);
-
-	// board.add(new Position(0, 0), one);
-	// board.add(new Position(1, 0), two);
-	// board.add(new Position(-1, 0), new Stone(Hive.Player.BLACK,
-	// Hive.Tile.SOLDIER_ANT));
-
-	// Map<Position, ArrayList<Stone>> stones =
-	// board.getStonesFromPlayer(Player.WHITE);
-	// assertTrue(stones.values().containsAll(List.of(new ArrayList<>(List.of(one)),
-	// new ArrayList<>(List.of(two)))));
-	// }
 }

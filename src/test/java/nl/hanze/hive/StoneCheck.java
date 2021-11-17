@@ -8,7 +8,6 @@ import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 import nl.hanze.hive.Stone.Trait;
 
-import static nl.hanze.hive.Rules.isAllowedToMove;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StoneCheck {
