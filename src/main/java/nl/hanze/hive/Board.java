@@ -3,9 +3,12 @@ package nl.hanze.hive;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import nl.hanze.hive.Hive.Player;
+import nl.hanze.hive.Hive.Tile;
 
 public class Board {
 	/**
@@ -66,16 +69,16 @@ public class Board {
 	}
 
 	/**
-	 * Locate the position of the QueenBee.
+	 * Locate the position of a queen bee.
 	 * 
-	 * @param stone The QueenBee to locate.
+	 * @param player The player whose queen bee to locate.
 	 * @return The position or null if not found.
 	 */
-	public Position getQueenBee(Stone stone) {
+	public Position getPositionOfQueenBee(Player player) {
 		// Walk through every occupied position on the board.
 		for (Map.Entry<Position, ArrayList<Stone>> position : positions.entrySet()) {
 
-			if (position.getValue().contains(stone)) {
+			if (position.getValue().contains(new Stone(player, Tile.QUEEN_BEE))) {
 				// The position contains the stone.
 				return position.getKey();
 			}

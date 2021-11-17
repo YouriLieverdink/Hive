@@ -67,7 +67,7 @@ public class Controller implements Hive {
 			throw new IllegalMove("The provided position is not empty.");
 		}
 
-		if (board.getNumberOfStones(turn) == 3 && board.getQueenBee(new Stone(turn, Tile.QUEEN_BEE)) == null) {
+		if (board.getNumberOfStones(turn) == 3 && board.getPositionOfQueenBee(turn) == null) {
 			// 4e. The queen bee must be added within the first four moves.
 			throw new IllegalMove("Fourth move, add the queen bee.");
 		}
@@ -131,7 +131,7 @@ public class Controller implements Hive {
 			throw new IllegalMove("The stone does not belong to you.");
 		}
 
-		if (board.getQueenBee(new Stone(turn, Tile.QUEEN_BEE)) == null) {
+		if (board.getPositionOfQueenBee(turn) == null) {
 			// 5b. The queen must be added in order to move tiles.
 			throw new IllegalMove("The queen bee must be added before moving tiles.");
 		}
@@ -182,8 +182,7 @@ public class Controller implements Hive {
 	@Override
 	public boolean isWinner(Player player) {
 		// Retrieve the position of the opponent's queen bee.
-		Stone stone = new Stone(opponent(player), Tile.QUEEN_BEE);
-		Position position = board.getQueenBee(stone);
+		Position position = board.getPositionOfQueenBee(opponent(player));
 
 		if (position == null) {
 			// The player has not played their queen bee yet.
