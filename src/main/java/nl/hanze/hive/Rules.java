@@ -153,7 +153,7 @@ public class Rules {
 			}
 
 			// Add and continue when the maximum depth has been reached.
-			if (depth <= 0 && !stone.hasTrait(Trait.move)) {
+			if (depth <= 0) {
 				availableMoves.add(n);
 				continue;
 			}
