@@ -13,7 +13,7 @@ import nl.hanze.hive.Hive.Tile;
 
 import java.util.List;
 
-public class BoardCheck {
+public class BoardSpec {
 	@Test
 	// Requirement 2a.
 	void givenPositionStoneWhenRemovedThenTrue() {

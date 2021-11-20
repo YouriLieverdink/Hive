@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
-public class HandCheck {
+public class HandSpec {
 	@Test
 	// Requirement 1c.
 	void givenStoneWhenStoneRemovedThenTrue() {

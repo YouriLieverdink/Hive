@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
-public class RulesCheck {
+public class RulesSpec {
 
 	@Test
 	// Requirements 8.

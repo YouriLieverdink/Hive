@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class PositionCheck {
+public class PositionSpec {
 	@Test
 	// Requirement 2a.
 	void givenSameCoordinatesThenEqual() {

@@ -10,7 +10,7 @@ import nl.hanze.hive.Stone.Trait;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StoneCheck {
+public class StoneSpec {
 	@Test
 	// Requirement 1a.
 	void givenSamePlayerThenEqual() {

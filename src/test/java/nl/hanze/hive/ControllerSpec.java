@@ -12,7 +12,7 @@ import nl.hanze.hive.Hive.IllegalMove;
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
-public class ControllerCheck {
+public class ControllerSpec {
 	@Test
 	// Requirement 3a.
 	void givenTileAndPositionWhenWhiteStoneThenTrue() throws IllegalMove {
