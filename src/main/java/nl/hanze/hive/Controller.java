@@ -1,6 +1,8 @@
 package nl.hanze.hive;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import nl.hanze.hive.models.Board;
@@ -76,6 +78,63 @@ public class Controller implements Hive {
 			// Set the hand.
 			players.put(player, hand);
 		}
+	}
+
+	/**
+	 * Retrieve a list of possible play positions.
+	 * 
+	 * @param player The player to get the plays for.
+	 * @return A list of positions.
+	 */
+	public List<Position> getPossiblePlays(Player player) {
+		// Create a list for the possible plays.
+		ArrayList<Position> possiblePlays = new ArrayList<>();
+
+		// Walk through all occupied positions.
+		for (Position p1 : board.getOccupiedPositions()) {
+			// Retrieve the stone.
+			Stone s1 = board.getStone(p1);
+
+			// Continue if the stone does not belong to the player.
+			if (!s1.belongsTo(player)) {
+				continue;
+			}
+
+			// Walk through all neighbouring positions.
+			for (Position p2 : p1.getNeighbours()) {
+				// Retrieve the stone.
+				Stone s2 = board.getStone(p2);
+
+				if (s2 != null) {
+					// The position is already occupied.
+					continue;
+				}
+
+				boolean isAllowed = p2.getNeighbours().stream().allMatch(p3 -> {
+					// Retrieve the stone.
+					Stone s3 = board.getStone(p3);
+
+					if (s3 == null) {
+						// Stone can be placed next to an empty spot.
+						return true;
+					}
+
+					if (s3.belongsTo(player)) {
+						// Stone can be placed to an own stone.
+						return true;
+					}
+
+					return false;
+				});
+
+				if (isAllowed) {
+					// It is a possible play!
+					possiblePlays.add(p2);
+				}
+			}
+		}
+
+		return possiblePlays;
 	}
 
 	@Override
@@ -193,6 +252,33 @@ public class Controller implements Hive {
 
 	@Override
 	public void pass() throws IllegalMove {
+
+		if (!players.get(turn).isEmpty()) {
+			// 12. The player's hand is not empty.
+			throw new IllegalMove("Your hand is not empty.");
+		}
+
+		boolean result = board.getOccupiedPositions().stream().anyMatch(p -> {
+			// Retrieve the stone.
+			Stone stone = board.getStone(p);
+
+			// Continue if the stone does not belong to the current player.
+			if (!stone.belongsTo(turn)) {
+				return false;
+			}
+
+			return stone.rules.hasPossibleMoves(board, p);
+		});
+
+		if (result) {
+			// 12. There is a possible move.
+			throw new IllegalMove("There is still a possible move.");
+		}
+
+		if (!getPossiblePlays(turn).isEmpty()) {
+			// 12. There is still a possible play.
+			throw new IllegalMove("There is still a possible play.");
+		}
 
 		turn = opponent(turn);
 	}

@@ -8,6 +8,18 @@ import nl.hanze.hive.models.Position;
 
 public abstract class Rules {
 	/**
+	 * Whether there are possible moves.
+	 * 
+	 * @param board The current board.
+	 * @param from  The position to check for.
+	 * @return Whether there is at least one possible move.
+	 */
+	public boolean hasPossibleMoves(Board board, Position from) {
+
+		return !getPossibleMoves(board, from).isEmpty();
+	}
+
+	/**
 	 * Whether the provided move is allowed.
 	 * 
 	 * @param board The current board.
@@ -28,17 +40,6 @@ public abstract class Rules {
 	 * @return A list of the possible moves.
 	 */
 	protected abstract List<Position> getPossibleMoves(Board board, Position from);
-
-	/**
-	 * Retrieve a list of possible plays.
-	 * 
-	 * @param board The current board.
-	 * @return A list of possible plays.
-	 */
-	public List<Position> getPossiblePlays(Board board) {
-
-		return null;
-	}
 
 	/**
 	 * Whether a stone is allowed to make a slide.

@@ -289,4 +289,77 @@ public class ControllerSpec {
 
 		assertThrows(Hive.IllegalMove.class, () -> c1.move(-1, 1, 0, 1));
 	}
+
+	@Test
+	// Requirement 12.
+	void whenHandNotEmptyThenIllegalMove() {
+		Board b1 = new Board();
+		Hand h1 = new Hand();
+		h1.add(new Stone(Player.WHITE));
+		Controller c1 = new Controller(b1, h1);
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.pass());
+	}
+
+	@Test
+	// Requirement 12.
+	void whenHandEmptyThenNothing() {
+		Board b1 = new Board();
+		Hand h1 = new Hand();
+		Controller c1 = new Controller(b1, h1);
+
+		assertDoesNotThrow(() -> c1.pass());
+	}
+
+	@Test
+	// Requirement 12.
+	void whenPossibleMoveThenIllegalMove() {
+		Board b1 = new Board();
+		Hand h1 = new Hand();
+		b1.add(new Position(0, -1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 0), new Stone(Player.BLACK, Tile.BEETLE));
+		b1.add(new Position(0, 1), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		Controller c1 = new Controller(b1, h1);
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.pass());
+	}
+
+	@Test
+	// Requirement 12.
+	void whenNoPossibleMovesThenNothing() {
+		Board b1 = new Board();
+		Hand h1 = new Hand();
+		b1.add(new Position(0, -1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.BEETLE));
+		b1.add(new Position(0, 1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		Controller c1 = new Controller(b1, h1);
+
+		assertDoesNotThrow(() -> c1.pass());
+	}
+
+	@Test
+	// Requirement 12.
+	void whenPossiblePlayThenIllegalMove() {
+		Board b1 = new Board();
+		Hand h1 = new Hand();
+		b1.add(new Position(0, -1), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.BEETLE));
+		b1.add(new Position(0, 1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		Controller c1 = new Controller(b1, h1);
+
+		assertThrows(Hive.IllegalMove.class, () -> c1.pass());
+	}
+
+	@Test
+	// Requirement 12.
+	void whenNoPossiblePlayThenNothing() {
+		Board b1 = new Board();
+		Hand h1 = new Hand();
+		b1.add(new Position(0, -1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.BEETLE));
+		b1.add(new Position(0, 1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		Controller c1 = new Controller(b1, h1);
+
+		assertDoesNotThrow(() -> c1.pass());
+	}
 }
