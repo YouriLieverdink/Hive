@@ -90,7 +90,7 @@ public class ControllerSpec {
 
 	@Test
 	// Requirement 3d.
-	void whenBlackIsWinnerAndWhiteIsWinnerThenTrue() {
+	void whenBlackIsSurroundedAndWhiteIsSurroundedThenTrue() {
 		Board b1 = new Board();
 		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
 		b1.add(new Position(0, -1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
@@ -105,6 +105,27 @@ public class ControllerSpec {
 		Controller c1 = new Controller(b1);
 
 		assertTrue(c1.isDraw());
+	}
+
+	@Test
+	// Requirement 3d.
+	void whenBlackIsWinnerAndWhiteIsWinnerThenFalse() {
+		Board b1 = new Board();
+
+		// Initialise the board.
+		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
+		b1.add(new Position(0, -1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
+		b1.add(new Position(-1, -1), new Stone(Player.BLACK));
+		b1.add(new Position(0, -2), new Stone(Player.BLACK));
+		b1.add(new Position(1, -2), new Stone(Player.BLACK));
+		b1.add(new Position(1, -1), new Stone(Player.BLACK));
+		b1.add(new Position(1, 0), new Stone(Player.BLACK));
+		b1.add(new Position(0, 1), new Stone(Player.BLACK));
+		b1.add(new Position(-1, 1), new Stone(Player.BLACK));
+		b1.add(new Position(-1, 0), new Stone(Player.BLACK));
+		Controller c1 = new Controller(b1);
+
+		assertFalse(c1.isWinner(Player.WHITE));
 	}
 
 	@Test

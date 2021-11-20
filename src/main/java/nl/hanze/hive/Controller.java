@@ -197,20 +197,25 @@ public class Controller implements Hive {
 		turn = opponent(turn);
 	}
 
-	@Override
-	public boolean isWinner(Player player) {
-		// Retrieve the position of the opponent's queen bee.
-		Position position = board.getPositionOfQueenBee(opponent(player));
+	/**
+	 * Whether the queen bee is surrounded.
+	 * 
+	 * @param player The player whose queen bee to check.
+	 * @return Whether it is surrounded.
+	 */
+	public boolean isQueenBeeSurrounded(Player player) {
+		// Retrieve the position of the queen bee.
+		Position position = board.getPositionOfQueenBee(player);
 
 		if (position == null) {
-			// The player has not played their queen bee yet.
+			// The player has not player their queen bee yet.
 			return false;
 		}
 
-		// Check all the neighbouring positions.
-		for (Position p : position.getNeighbours()) {
-			// When the cell is empty, the queen bee is not surrounded.
-			if (board.getStone(p) == null) {
+		// Check if all the neighbouring positions are occupied.
+		for (Position n : position.getNeighbours()) {
+			// Return false when a position is empty.
+			if (board.getStone(n) == null) {
 				return false;
 			}
 		}
@@ -219,8 +224,15 @@ public class Controller implements Hive {
 	}
 
 	@Override
+	public boolean isWinner(Player player) {
+		// Check whether the opponent's queen bee is surrounded.
+		return isQueenBeeSurrounded(opponent(player)) && !isQueenBeeSurrounded(player);
+	}
+
+	@Override
 	public boolean isDraw() {
-		return isWinner(Player.WHITE) && isWinner(Player.BLACK);
+		// Check whether both queen bees are surrounded.
+		return isQueenBeeSurrounded(Player.WHITE) && isQueenBeeSurrounded(Player.BLACK);
 	}
 
 	/**
