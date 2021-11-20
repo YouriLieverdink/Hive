@@ -1,4 +1,4 @@
-package nl.hanze.hive;
+package nl.hanze.hive.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

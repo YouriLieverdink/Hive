@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import nl.hanze.hive.Hive.IllegalMove;
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
+import nl.hanze.hive.models.Board;
+import nl.hanze.hive.models.Hand;
+import nl.hanze.hive.models.Position;
+import nl.hanze.hive.models.Stone;
 
 public class ControllerSpec {
 	@Test
@@ -263,28 +267,5 @@ public class ControllerSpec {
 		Controller c1 = new Controller(b1);
 
 		assertThrows(Hive.IllegalMove.class, () -> c1.move(-1, 1, 0, 1));
-	}
-
-	@Test
-	// Requirement 11.
-	void whenNoPossibleMovesThenNothing() {
-		Board b1 = new Board();
-		b1.add(new Position(0, -1), new Stone(Player.BLACK, Tile.QUEEN_BEE));
-		b1.add(new Position(0, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
-		b1.add(new Position(0, 1), new Stone(Player.BLACK, Tile.SOLDIER_ANT));
-		Controller c1 = new Controller(b1, new Hand());
-
-		assertDoesNotThrow(() -> c1.pass());
-	}
-
-	@Test
-	// Requirement 11.
-	void whenPossibleMovesThenIllegalMove() {
-		Board b1 = new Board();
-		b1.add(new Position(0, 0), new Stone(Player.BLACK, Tile.QUEEN_BEE));
-		b1.add(new Position(-1, 0), new Stone(Player.WHITE, Tile.QUEEN_BEE));
-		Controller c1 = new Controller(b1, new Hand());
-
-		assertThrows(Hive.IllegalMove.class, () -> c1.pass());
 	}
 }

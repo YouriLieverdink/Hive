@@ -3,6 +3,11 @@ package nl.hanze.hive;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.hanze.hive.models.Board;
+import nl.hanze.hive.models.Hand;
+import nl.hanze.hive.models.Position;
+import nl.hanze.hive.models.Stone;
+
 public class Controller implements Hive {
 	/**
 	 * The players and their hand.
@@ -153,7 +158,7 @@ public class Controller implements Hive {
 			throw new IllegalMove("The queen bee must be added before moving tiles.");
 		}
 
-		if (!Rules.isAllowedToMove(board, from, to)) {
+		if (!stone.rules.isAllowedToMove(board, from, to)) {
 			// The move is not allowed.
 			throw new IllegalMove("This is not a valid move.");
 		}
@@ -188,17 +193,6 @@ public class Controller implements Hive {
 
 	@Override
 	public void pass() throws IllegalMove {
-		// Check if the player has any possible moves.
-		if (Rules.hasPossibleMove(board, turn)) {
-			// Requirement 12.
-			throw new IllegalMove("There is still a possible move.");
-		}
-
-		// Check if the player has stones in their hand.
-		if (!players.get(turn).isEmpty()) {
-			// Requirement 12.
-			throw new IllegalMove("There is a stone left in your hand.");
-		}
 
 		turn = opponent(turn);
 	}
