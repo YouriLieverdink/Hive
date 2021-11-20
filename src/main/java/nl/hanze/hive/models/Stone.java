@@ -1,10 +1,15 @@
-package nl.hanze.hive;
+package nl.hanze.hive.models;
 
-import java.util.List;
 import java.util.Objects;
 
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
+import nl.hanze.hive.rules.Beetle;
+import nl.hanze.hive.rules.GrassHopper;
+import nl.hanze.hive.rules.QueenBee;
+import nl.hanze.hive.rules.Rules;
+import nl.hanze.hive.rules.SoldierAnt;
+import nl.hanze.hive.rules.Spider;
 
 public class Stone {
 	/**
@@ -16,6 +21,11 @@ public class Stone {
 	 * The stone's face.
 	 */
 	private Tile tile;
+
+	/**
+	 * This stones' rules.
+	 */
+	public final Rules rules;
 
 	/**
 	 * Class constructor which specifies the player.
@@ -35,6 +45,29 @@ public class Stone {
 	public Stone(Player player, Tile tile) {
 		this.player = player;
 		this.tile = tile;
+
+		// Initialise the stone's rules.
+		switch (tile) {
+		case BEETLE:
+			this.rules = new Beetle();
+			break;
+		case GRASSHOPPER:
+			this.rules = new GrassHopper();
+			break;
+		case QUEEN_BEE:
+			this.rules = new QueenBee();
+			break;
+		case SOLDIER_ANT:
+			this.rules = new SoldierAnt();
+			break;
+		case SPIDER:
+			this.rules = new Spider();
+			break;
+		default:
+			this.rules = null;
+			break;
+
+		}
 	}
 
 	/**
@@ -45,60 +78,6 @@ public class Stone {
 	 */
 	public boolean belongsTo(Player player) {
 		return this.player == player;
-	}
-
-	/**
-	 * Returns the traits based on the face of this stone.
-	 * 
-	 * @return A list of traits.
-	 */
-	public List<Trait> getTraits() {
-
-		switch (tile) {
-		case BEETLE:
-			return List.of(Trait.moveOne, Trait.stack);
-
-		case GRASSHOPPER:
-			return List.of(Trait.jump);
-
-		case QUEEN_BEE:
-			return List.of(Trait.moveOne);
-
-		case SOLDIER_ANT:
-			return List.of(Trait.move);
-
-		case SPIDER:
-			return List.of(Trait.moveThree);
-
-		default:
-			return List.of();
-		}
-	}
-
-	/**
-	 * Whether this stone has a trait.
-	 * 
-	 * @param trait The trait to check.
-	 * @return If the traits is present.
-	 */
-	public boolean hasTrait(Trait trait) {
-		return this.getTraits().contains(trait);
-	}
-
-	/**
-	 * Types of traits.
-	 */
-	enum Trait {
-		// Allowed to move indefinitely .
-		move,
-		// Allowed to move one times.
-		moveOne,
-		// Allowed to move three times.
-		moveThree,
-		// Allowed to jump over stones.
-		jump,
-		// Allowed to stack on top of others.
-		stack,
 	}
 
 	@Override

@@ -1,7 +1,14 @@
 package nl.hanze.hive;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import nl.hanze.hive.models.Board;
+import nl.hanze.hive.models.Hand;
+import nl.hanze.hive.models.Position;
+import nl.hanze.hive.models.Stone;
 
 public class Controller implements Hive {
 	/**
@@ -71,6 +78,63 @@ public class Controller implements Hive {
 			// Set the hand.
 			players.put(player, hand);
 		}
+	}
+
+	/**
+	 * Retrieve a list of possible play positions.
+	 * 
+	 * @param player The player to get the plays for.
+	 * @return A list of positions.
+	 */
+	public List<Position> getPossiblePlays(Player player) {
+		// Create a list for the possible plays.
+		ArrayList<Position> possiblePlays = new ArrayList<>();
+
+		// Walk through all occupied positions.
+		for (Position p1 : board.getOccupiedPositions()) {
+			// Retrieve the stone.
+			Stone s1 = board.getStone(p1);
+
+			// Continue if the stone does not belong to the player.
+			if (!s1.belongsTo(player)) {
+				continue;
+			}
+
+			// Walk through all neighbouring positions.
+			for (Position p2 : p1.getNeighbours()) {
+				// Retrieve the stone.
+				Stone s2 = board.getStone(p2);
+
+				if (s2 != null) {
+					// The position is already occupied.
+					continue;
+				}
+
+				boolean isAllowed = p2.getNeighbours().stream().allMatch(p3 -> {
+					// Retrieve the stone.
+					Stone s3 = board.getStone(p3);
+
+					if (s3 == null) {
+						// Stone can be placed next to an empty spot.
+						return true;
+					}
+
+					if (s3.belongsTo(player)) {
+						// Stone can be placed to an own stone.
+						return true;
+					}
+
+					return false;
+				});
+
+				if (isAllowed) {
+					// It is a possible play!
+					possiblePlays.add(p2);
+				}
+			}
+		}
+
+		return possiblePlays;
 	}
 
 	@Override
@@ -153,7 +217,7 @@ public class Controller implements Hive {
 			throw new IllegalMove("The queen bee must be added before moving tiles.");
 		}
 
-		if (!Rules.isAllowedToMove(board, from, to)) {
+		if (!stone.rules.isAllowedToMove(board, from, to)) {
 			// The move is not allowed.
 			throw new IllegalMove("This is not a valid move.");
 		}
@@ -188,35 +252,56 @@ public class Controller implements Hive {
 
 	@Override
 	public void pass() throws IllegalMove {
-		// Check if the player has any possible moves.
-		if (Rules.hasPossibleMove(board, turn)) {
-			// Requirement 12.
+
+		if (!players.get(turn).isEmpty()) {
+			// 12. The player's hand is not empty.
+			throw new IllegalMove("Your hand is not empty.");
+		}
+
+		boolean result = board.getOccupiedPositions().stream().anyMatch(p -> {
+			// Retrieve the stone.
+			Stone stone = board.getStone(p);
+
+			// Continue if the stone does not belong to the current player.
+			if (!stone.belongsTo(turn)) {
+				return false;
+			}
+
+			return stone.rules.hasPossibleMoves(board, p);
+		});
+
+		if (result) {
+			// 12. There is a possible move.
 			throw new IllegalMove("There is still a possible move.");
 		}
 
-		// Check if the player has stones in their hand.
-		if (!players.get(turn).isEmpty()) {
-			// Requirement 12.
-			throw new IllegalMove("There is a stone left in your hand.");
+		if (!getPossiblePlays(turn).isEmpty()) {
+			// 12. There is still a possible play.
+			throw new IllegalMove("There is still a possible play.");
 		}
 
 		turn = opponent(turn);
 	}
 
-	@Override
-	public boolean isWinner(Player player) {
-		// Retrieve the position of the opponent's queen bee.
-		Position position = board.getPositionOfQueenBee(opponent(player));
+	/**
+	 * Whether the queen bee is surrounded.
+	 * 
+	 * @param player The player whose queen bee to check.
+	 * @return Whether it is surrounded.
+	 */
+	public boolean isQueenBeeSurrounded(Player player) {
+		// Retrieve the position of the queen bee.
+		Position position = board.getPositionOfQueenBee(player);
 
 		if (position == null) {
-			// The player has not played their queen bee yet.
+			// The player has not player their queen bee yet.
 			return false;
 		}
 
-		// Check all the neighbouring positions.
-		for (Position p : position.getNeighbours()) {
-			// When the cell is empty, the queen bee is not surrounded.
-			if (board.getStone(p) == null) {
+		// Check if all the neighbouring positions are occupied.
+		for (Position n : position.getNeighbours()) {
+			// Return false when a position is empty.
+			if (board.getStone(n) == null) {
 				return false;
 			}
 		}
@@ -225,8 +310,15 @@ public class Controller implements Hive {
 	}
 
 	@Override
+	public boolean isWinner(Player player) {
+		// Check whether the opponent's queen bee is surrounded.
+		return isQueenBeeSurrounded(opponent(player)) && !isQueenBeeSurrounded(player);
+	}
+
+	@Override
 	public boolean isDraw() {
-		return isWinner(Player.WHITE) && isWinner(Player.BLACK);
+		// Check whether both queen bees are surrounded.
+		return isQueenBeeSurrounded(Player.WHITE) && isQueenBeeSurrounded(Player.BLACK);
 	}
 
 	/**

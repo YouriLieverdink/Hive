@@ -1,4 +1,4 @@
-package nl.hanze.hive;
+package nl.hanze.hive.models;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import nl.hanze.hive.Hive.Player;
 import nl.hanze.hive.Hive.Tile;
 
-public class HandCheck {
+public class HandSpec {
 	@Test
 	// Requirement 1c.
 	void givenStoneWhenStoneRemovedThenTrue() {

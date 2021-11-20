@@ -1,4 +1,4 @@
-package nl.hanze.hive;
+package nl.hanze.hive.models;
 
 import java.util.HashMap;
 import java.util.Map;
